@@ -1,0 +1,68 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls %}
+
+{% block after_field_sets %}
+{{ block.super }}
+
+{% if original %}
+<fieldset class="module aligned">
+    <h2>نتایج آزمون‌ها</h2>
+
+    <div class="form-row">
+        <div class="flex-container">
+            <div style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin: 5px;">
+                <h3 style="color: #0d6efd;">PHQ-9 (افسردگی)</h3>
+                {% if phq9_results %}
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #f8f9fa;">
+                                <th style="padding: 8px; border: 1px solid #ddd;">تاریخ</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">امتیاز</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">شدت</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in phq9_results %}
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid #ddd;">{{ r.created_at|date:"Y/m/d H:i" }}</td>
+                                <td style="padding: 8px; border: 1px solid #ddd; text-align: center; font-weight: bold;">{{ r.score }}</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">{{ r.get_severity_display }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p style="color: #6c757d;">هنوز آزمونی انجام نشده است.</p>
+                {% endif %}
+            </div>
+
+            <div style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin: 5px;">
+                <h3 style="color: #dc3545;">GAD-7 (اضطراب)</h3>
+                {% if gad7_results %}
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #f8f9fa;">
+                                <th style="padding: 8px; border: 1px solid #ddd;">تاریخ</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">امتیاز</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">شدت</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in gad7_results %}
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid #ddd;">{{ r.created_at|date:"Y/m/d H:i" }}</td>
+                                <td style="padding: 8px; border: 1px solid #ddd; text-align: center; font-weight: bold;">{{ r.score }}</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">{{ r.get_severity_display }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p style="color: #6c757d;">هنوز آزمونی انجام نشده است.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</fieldset>
+{% endif %}
+{% endblock %}
