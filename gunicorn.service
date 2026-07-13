@@ -1,0 +1,15 @@
+[Unit]
+Description=gunicorn daemon for psychology_site
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/psychology_site
+ExecStart=/var/www/psychology_site/venv/bin/gunicorn \
+    --workers 3 \
+    --bind unix:/var/www/psychology_site/gunicorn.sock \
+    config.wsgi:application
+
+[Install]
+WantedBy=multi-user.target

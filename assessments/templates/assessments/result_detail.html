@@ -1,0 +1,43 @@
+{% extends "core/base.html" %}
+
+{% block title %}نتیجه {{ test_type }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mt-4">
+                <div class="card-header bg-info text-white">
+                    <h4 class="text-center">نتیجه {{ test_name }} ({{ test_type }})</h4>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <h1 class="display-3 fw-bold text-primary">{{ result.score }}</h1>
+                        <p class="lead">امتیاز کل</p>
+                    </div>
+
+                    <div class="alert alert-secondary text-center">
+                        <h5>شدت: {{ severity_label }}</h5>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h6 class="card-title">تفسیر:</h6>
+                            <p class="card-text">{{ interpretation }}</p>
+                        </div>
+                    </div>
+
+                    <div class="text-muted small mb-3">
+                        <p>تاریخ آزمون: {{ result.created_at|date:"Y/m/d H:i" }}</p>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'test_history' %}" class="btn btn-outline-secondary">تاریخچه آزمون‌ها</a>
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">داشبورد</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

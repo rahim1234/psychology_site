@@ -1,0 +1,30 @@
+{% extends "core/base.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <article>
+                <h1>{{ post.title }}</h1>
+                <p class="text-muted">{{ post.created_at|date:"Y/m/d H:i" }}</p>
+
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" class="img-fluid rounded mb-4" alt="{{ post.title }}">
+                {% endif %}
+
+                <div class="content">
+                    {{ post.content|linebreaks }}
+                </div>
+            </article>
+
+            <hr>
+            <a href="{% url 'blog_list' %}" class="btn btn-outline-secondary">بازگشت به وبلاگ</a>
+            {% if user.is_staff %}
+                <a href="{% url 'blog_update' post.pk %}" class="btn btn-outline-primary">ویرایش</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

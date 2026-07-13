@@ -1,0 +1,45 @@
+{% extends "core/base.html" %}
+
+{% block title %}آزمون PHQ-9 - افسردگی{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mt-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="text-center">آزمون افسردگی PHQ-9</h4>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted mb-4">
+                        در دو هفته اخیر، چقدر مشکلات زیر را داشته‌اید؟ برای هر سؤال، گزینه‌ای را انتخاب کنید.
+                    </p>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="mb-4">
+                                <h6 class="fw-bold">{{ forloop.counter }}. {{ field.label }}</h6>
+                                <div class="ms-3">
+                                    {% for choice in field %}
+                                        <div class="form-check">
+                                            {{ choice.tag }}
+                                            <label class="form-check-label" for="{{ choice.id_for_label }}">
+                                                {{ choice.choice_label }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                {% if field.errors %}
+                                    <div class="text-danger small mt-1">{{ field.errors }}</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary btn-lg w-100">ثبت پاسخ‌ها</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

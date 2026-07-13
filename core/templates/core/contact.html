@@ -1,0 +1,55 @@
+{% extends "core/base.html" %}
+
+{% block title %}تماس با ما{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="text-center mb-4">تماس با ما</h1>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>اطلاعات تماس</h4>
+                            <ul class="list-unstyled">
+                                <li class="mb-3">
+                                    <i class="bi bi-envelope-fill text-primary me-2"></i>
+                                    <strong>ایمیل:</strong> info@psychology-center.ir
+                                </li>
+                                <li class="mb-3">
+                                    <i class="bi bi-telephone-fill text-success me-2"></i>
+                                    <strong>تلفن:</strong> 021-12345678
+                                </li>
+                                <li class="mb-3">
+                                    <i class="bi bi-geo-alt-fill text-danger me-2"></i>
+                                    <strong>آدرس:</strong> تهران، خیابان ولیعصر، پلاک ۱۲۳
+                                </li>
+                                <li class="mb-3">
+                                    <i class="bi bi-clock-fill text-warning me-2"></i>
+                                    <strong>ساعات کاری:</strong> شنبه تا پنجشنبه، ۹ صبح تا ۵ عصر
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h4>پیام برای ما</h4>
+                            <p class="text-muted">
+                                برای ارتباط با ما می‌توانید از طریق ایمیل یا تلفن
+                                با ما در تماس باشید. ما در اسرع وقت پاسخگو خواهیم بود.
+                            </p>
+                            <div class="alert alert-warning">
+                                <small>
+                                    <i class="bi bi-exclamation-triangle"></i>
+                                    در صورت اورژانس روانپزشکی، با خط اورژانس اجتماعی
+                                    <strong>۱۲۳</strong> تماس بگیرید.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

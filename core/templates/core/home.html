@@ -1,0 +1,109 @@
+{% extends "core/base.html" %}
+
+{% block title %}صفحه اصلی{% endblock %}
+
+{% block content %}
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 mb-4">مرکز مشاوره روانشناسی</h1>
+        <p class="lead mb-4">سلامت روان شما اولویت ماست</p>
+        <p class="mb-4">
+            ما با ارائه ابزارهای ارزیابی روانشناختی و مشاوره تخصصی، به شما کمک می‌کنیم
+            تا سلامت روان خود را بهتر درک کنید و قدم‌های موثری برای بهبود آن بردارید.
+        </p>
+        {% if not user.is_authenticated %}
+            <a href="{% url 'register' %}" class="btn btn-light btn-lg me-2">ثبت نام رایگان</a>
+            <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg">ورود</a>
+        {% else %}
+            <a href="{% url 'dashboard' %}" class="btn btn-light btn-lg">رفتن به داشبورد</a>
+        {% endif %}
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">خدمات ما</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-clipboard-check display-1 text-primary mb-3"></i>
+                        <h5 class="card-title">آزمون افسردگی PHQ-9</h5>
+                        <p class="card-text">
+                            ارزیابی سطح افسردگی با استفاده از پرسشنامه استاندارد PHQ-9
+                            و دریافت تفسیر تخصصی نتایج.
+                        </p>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'phq9_test' %}" class="btn btn-primary">شروع آزمون</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-heart-pulse display-1 text-danger mb-3"></i>
+                        <h5 class="card-title">آزمون اضطراب GAD-7</h5>
+                        <p class="card-text">
+                            ارزیابی سطح اضطراب عمومی با استفاده از پرسشنامه استاندارد GAD-7
+                            و دریافت تفسیر تخصصی نتایج.
+                        </p>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'gad7_test' %}" class="btn btn-danger">شروع آزمون</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-journal-text display-1 text-success mb-3"></i>
+                        <h5 class="card-title">وبلاگ تخصصی</h5>
+                        <p class="card-text">
+                            مطالعه مقالات تخصصی در زمینه سلامت روان، مدیریت استرس
+                            و بهبود کیفیت زندگی.
+                        </p>
+                        <a href="{% url 'blog_list' %}" class="btn btn-success">مشاهده مقالات</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-light py-5">
+    <div class="container text-center">
+        <h2 class="mb-4">چرا مرکز ما؟</h2>
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <div class="p-3">
+                    <i class="bi bi-shield-check display-4 text-primary"></i>
+                    <h5 class="mt-3">امن و محرمانه</h5>
+                    <p>اطلاعات شما کاملاً محرمانه و ایمن نگهداری می‌شود.</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="p-3">
+                    <i class="bi bi-speedometer2 display-4 text-success"></i>
+                    <h5 class="mt-3">سریع و آسان</h5>
+                    <p>آزمون‌ها در کمتر از ۵ دقیقه تکمیل می‌شوند.</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="p-3">
+                    <i class="bi bi-translate display-4 text-info"></i>
+                    <h5 class="mt-3">تفسیر فارسی</h5>
+                    <p>نتایج با تفسیر کامل فارسی ارائه می‌شوند.</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="p-3">
+                    <i class="bi bi-graph-up display-4 text-warning"></i>
+                    <h5 class="mt-3">پیگیری پیشرفت</h5>
+                    <p>تاریخچه آزمون‌ها برای پیگیری تغییرات ذخیره می‌شود.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
