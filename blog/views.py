@@ -1,9 +1,9 @@
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
-from .models import Post
 from .forms import PostForm
+from .models import Post
 
 
 class PostListView(ListView):
@@ -20,6 +20,12 @@ class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
+
+    def get_queryset(self):
+        # Staff can preview drafts; everyone else only sees published posts.
+        if self.request.user.is_authenticated and self.request.user.is_staff:
+            return Post.objects.all()
+        return Post.objects.filter(published=True)
 
 
 class StaffRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):

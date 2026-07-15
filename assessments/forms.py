@@ -1,10 +1,11 @@
 from django import forms
 
+from .scoring import GAD7_ANSWERS, GAD7_QUESTIONS, PHQ9_ANSWERS, PHQ9_QUESTIONS
+
 
 class PHQ9TestForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        from .scoring import PHQ9_QUESTIONS, PHQ9_ANSWERS
         for i, question in enumerate(PHQ9_QUESTIONS, 1):
             self.fields[f'q{i}'] = forms.ChoiceField(
                 label=question,
@@ -17,7 +18,6 @@ class PHQ9TestForm(forms.Form):
 class GAD7TestForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        from .scoring import GAD7_QUESTIONS, GAD7_ANSWERS
         for i, question in enumerate(GAD7_QUESTIONS, 1):
             self.fields[f'q{i}'] = forms.ChoiceField(
                 label=question,

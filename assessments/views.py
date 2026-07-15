@@ -22,13 +22,12 @@ class PHQ9TestView(LoginRequiredMixin, View):
         if form.is_valid():
             answers = form.cleaned_data
             score, severity = calculate_phq9_score(answers)
-            PHQ9Result.objects.create(
+            result = PHQ9Result.objects.create(
                 user=request.user,
                 score=score,
                 severity=severity,
                 answers=answers,
             )
-            result = PHQ9Result.objects.filter(user=request.user).order_by('-created_at').first()
             return redirect('phq9_result_detail', pk=result.pk)
         return render(request, 'assessments/phq9_test.html', {'form': form})
 
@@ -43,13 +42,12 @@ class GAD7TestView(LoginRequiredMixin, View):
         if form.is_valid():
             answers = form.cleaned_data
             score, severity = calculate_gad7_score(answers)
-            GAD7Result.objects.create(
+            result = GAD7Result.objects.create(
                 user=request.user,
                 score=score,
                 severity=severity,
                 answers=answers,
             )
-            result = GAD7Result.objects.filter(user=request.user).order_by('-created_at').first()
             return redirect('gad7_result_detail', pk=result.pk)
         return render(request, 'assessments/gad7_test.html', {'form': form})
 

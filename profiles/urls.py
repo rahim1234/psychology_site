@@ -6,4 +6,5 @@ urlpatterns = [
     path('update/', views.ProfileUpdateView.as_view(), name='profile_update'),
     path('', views.DashboardView.as_view(), name='profile'),
     path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
+    path('files/<str:kind>/<int:pk>/', views.protected_media, name='protected_media'),
 ]

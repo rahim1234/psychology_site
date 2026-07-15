@@ -9,7 +9,11 @@ class ProfileForm(forms.ModelForm):
     )
     age = forms.IntegerField(
         label='سن',
-        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'سن خود را وارد کنید'})
+        min_value=1,
+        max_value=120,
+        widget=forms.NumberInput(attrs={
+            'class': 'form-control', 'placeholder': 'سن خود را وارد کنید', 'min': 1, 'max': 120,
+        })
     )
     gender = forms.ChoiceField(
         label='جنسیت',

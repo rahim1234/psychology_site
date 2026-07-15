@@ -73,3 +73,9 @@ footer {
 .table thead {
     border-radius: 8px;
 }
+
+/* Logout button rendered as a form (POST) but styled like a nav link */
+.navbar-nav .btn-link.nav-link {
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+}

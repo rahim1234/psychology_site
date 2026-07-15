@@ -4,7 +4,7 @@
 {% block after_field_sets %}
 {{ block.super }}
 
-{% if original %}
+{% if original and show_test_results %}
 <fieldset class="module aligned">
     <h2>نتایج آزمون‌ها</h2>
 

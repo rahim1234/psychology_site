@@ -1,0 +1,48 @@
+{% extends "core/base.html" %}
+
+{% block title %}تایید ایمیل{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card mt-5">
+                <div class="card-header">
+                    <h4 class="text-center">تایید ایمیل</h4>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <p class="text-center text-muted">
+                        یک کد ۶ رقمی به آدرس <strong>{{ email }}</strong> ارسال شد.
+                        کد را وارد کنید تا ثبت نام شما تکمیل شود.
+                    </p>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="mb-3">
+                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <div class="text-danger small">{{ field.errors }}</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-success w-100">تایید کد</button>
+                    </form>
+
+                    <form method="post" action="{% url 'resend_verification' %}" class="text-center mt-3">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-link">ارسال مجدد کد</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
