@@ -2,52 +2,164 @@
 
 {% block title %}تماس با ما{% endblock %}
 
-{% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h1 class="text-center mb-4">تماس با ما</h1>
+{% block extra_css %}
+<style>
+    .page-header {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        color: white;
+        padding: 80px 0;
+        text-align: center;
+        margin-bottom: 60px;
+    }
+    
+    .page-header h1 {
+        font-size: 2.8rem;
+        font-weight: 800;
+        margin-bottom: 15px;
+    }
+    
+    .contact-card {
+        background: white;
+        border-radius: 16px;
+        padding: 35px;
+        height: 100%;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        border: 1px solid #f0f0f0;
+    }
+    
+    .contact-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(74, 144, 164, 0.15);
+    }
+    
+    .contact-icon {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+    
+    .contact-card h3 {
+        font-weight: 700;
+        color: var(--dark-color);
+        margin-bottom: 15px;
+    }
+    
+    .contact-card p {
+        color: #666;
+        line-height: 1.8;
+        margin: 0;
+    }
+    
+    .emergency-box {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        color: white;
+        border-radius: 16px;
+        padding: 30px;
+        margin-top: 40px;
+    }
+    
+    .emergency-box h3 {
+        color: white;
+        margin-bottom: 15px;
+    }
+    
+    .emergency-box .btn {
+        background: white;
+        color: #e74c3c;
+        font-weight: 700;
+        padding: 10px 30px;
+        border-radius: 10px;
+    }
+    
+    .emergency-box .btn:hover {
+        transform: translateY(-2px);
+    }
+</style>
+{% endblock %}
 
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h4>اطلاعات تماس</h4>
-                            <ul class="list-unstyled">
-                                <li class="mb-3">
-                                    <i class="bi bi-envelope-fill text-primary me-2"></i>
-                                    <strong>ایمیل:</strong> info@psychology-center.ir
-                                </li>
-                                <li class="mb-3">
-                                    <i class="bi bi-telephone-fill text-success me-2"></i>
-                                    <strong>تلفن:</strong> 021-12345678
-                                </li>
-                                <li class="mb-3">
-                                    <i class="bi bi-geo-alt-fill text-danger me-2"></i>
-                                    <strong>آدرس:</strong> تهران، خیابان ولیعصر، پلاک ۱۲۳
-                                </li>
-                                <li class="mb-3">
-                                    <i class="bi bi-clock-fill text-warning me-2"></i>
-                                    <strong>ساعات کاری:</strong> شنبه تا پنجشنبه، ۹ صبح تا ۵ عصر
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h4>پیام برای ما</h4>
-                            <p class="text-muted">
-                                برای ارتباط با ما می‌توانید از طریق ایمیل یا تلفن
-                                با ما در تماس باشید. ما در اسرع وقت پاسخگو خواهیم بود.
-                            </p>
-                            <div class="alert alert-warning">
-                                <small>
-                                    <i class="bi bi-exclamation-triangle"></i>
-                                    در صورت اورژانس روانپزشکی، با خط اورژانس اجتماعی
-                                    <strong>۱۲۳</strong> تماس بگیرید.
-                                </small>
-                            </div>
-                        </div>
-                    </div>
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1><i class="bi bi-envelope me-3"></i>تماس با ما</h1>
+        <p>ما مشتاق شنیدن نظرات شما هستیم</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row g-4">
+        <div class="col-lg-4 col-md-6">
+            <div class="contact-card text-center">
+                <div class="contact-icon mx-auto">
+                    <i class="bi bi-envelope"></i>
                 </div>
+                <h3>ایمیل</h3>
+                <p>info@psychology-center.ir</p>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="contact-card text-center">
+                <div class="contact-icon mx-auto">
+                    <i class="bi bi-telephone"></i>
+                </div>
+                <h3>تلفن</h3>
+                <p>۰۲۱-۱۲۳۴۵۶۷۸</p>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="contact-card text-center">
+                <div class="contact-icon mx-auto">
+                    <i class="bi bi-geo-alt"></i>
+                </div>
+                <h3>آدرس</h3>
+                <p>تهران، خیابان ولیعصر، پلاک ۱۲۳</p>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6">
+            <div class="contact-card">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="contact-icon">
+                        <i class="bi bi-clock"></i>
+                    </div>
+                    <h3 class="mb-0">ساعات کاری</h3>
+                </div>
+                <p>شنبه تا پنجشنبه، ۹ صبح تا ۵ عصر</p>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-12">
+            <div class="contact-card">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="contact-icon">
+                        <i class="bi bi-chat-dots"></i>
+                    </div>
+                    <h3 class="mb-0">پیام برای ما</h3>
+                </div>
+                <p>
+                    برای ارتباط با ما می‌توانید از طریق ایمیل یا تلفن
+                    با ما در تماس باشید. ما در اسرع وقت پاسخگو خواهیم بود.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Emergency Box -->
+    <div class="emergency-box">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h3><i class="bi bi-exclamation-triangle me-2"></i>اورژانس روانپزشکی</h3>
+                <p class="mb-0">در صورت اورژانس روانپزشکی، با خط اورژانس اجتماعی ۱۲۳ تماس بگیرید.</p>
+            </div>
+            <div class="col-lg-4 text-center">
+                <a href="tel:123" class="btn">
+                    <i class="bi bi-telephone me-2"></i>تماس با ۱۲۳
+                </a>
             </div>
         </div>
     </div>

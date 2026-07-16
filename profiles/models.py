@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.core.validators import FileExtensionValidator, MaxValueValidator, MinValueValidator
 from django.db import models
-
+from django.utils import timezone
 from .storage import get_private_storage
 from .validators import MaxFileSizeValidator
 
@@ -43,39 +43,6 @@ class SessionNote(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='session_notes')
     session_date = models.DateField(verbose_name='تاریخ جلسه')
     content = models.TextField(verbose_name='یادداشت / خلاصه جلسه')
-    image = models.ImageField(
-        storage=get_private_storage,
-        upload_to='session_notes/images/%Y/%m/',
-        blank=True,
-        null=True,
-        validators=[MaxFileSizeValidator(10)],
-        verbose_name='تصویر پیوست',
-        help_text='حداکثر حجم: ۱۰ مگابایت',
-    )
-    audio = models.FileField(
-        storage=get_private_storage,
-        upload_to='session_notes/audio/%Y/%m/',
-        blank=True,
-        null=True,
-        validators=[
-            FileExtensionValidator(allowed_extensions=['mp3', 'wav', 'ogg', 'm4a', 'aac']),
-            MaxFileSizeValidator(20),
-        ],
-        verbose_name='فایل صوتی پیوست',
-        help_text='فرمت‌های مجاز: mp3, wav, ogg, m4a, aac — حداکثر حجم: ۲۰ مگابایت',
-    )
-    video = models.FileField(
-        storage=get_private_storage,
-        upload_to='session_notes/video/%Y/%m/',
-        blank=True,
-        null=True,
-        validators=[
-            FileExtensionValidator(allowed_extensions=['mp4', 'mov', 'webm', 'avi']),
-            MaxFileSizeValidator(100),
-        ],
-        verbose_name='فایل تصویری (ویدیو) پیوست',
-        help_text='فرمت‌های مجاز: mp4, mov, webm, avi — حداکثر حجم: ۱۰۰ مگابایت',
-    )
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -121,6 +88,11 @@ class ProfileAttachment(models.Model):
         verbose_name='فایل',
         help_text='عکس، صدا، ویدیو یا سند — حداکثر حجم: ۵۰ مگابایت',
     )
+    upload_date = models.DateField(
+        verbose_name='تاریخ فایل',
+        default=timezone.localdate,
+        help_text='تاریخی که این فایل به آن تعلق دارد (مثلاً تاریخ جلسه یا تاریخ سند) — به شمسی وارد شود.',
+    )
     description = models.CharField(max_length=255, blank=True, verbose_name='توضیح فایل')
     uploaded_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -135,7 +107,7 @@ class ProfileAttachment(models.Model):
     class Meta:
         verbose_name = 'فایل پیوست پروفایل'
         verbose_name_plural = 'فایل‌های پیوست پروفایل'
-        ordering = ['-uploaded_at']
+        ordering = ['-upload_date', '-uploaded_at']
 
     def __str__(self):
-        return f'فایل پیوست {self.profile.full_name} - {self.uploaded_at:%Y-%m-%d}'
+        return f'فایل پیوست {self.profile.full_name} - {self.upload_date:%Y-%m-%d}'

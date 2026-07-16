@@ -1,11 +1,14 @@
 from django.conf import settings
 from django.db import models
-
+from ckeditor_uploader.fields import RichTextUploadingField  # اضافه شود
 
 class Post(models.Model):
     title = models.CharField(max_length=300, verbose_name='عنوان')
-    content = models.TextField(verbose_name='محتوا')
-    image = models.ImageField(upload_to='blog/images/', blank=True, null=True, verbose_name='تصویر')
+    
+    # تغییر این خط:
+    content = RichTextUploadingField(verbose_name='محتوا')
+    
+    image = models.ImageField(upload_to='blog/images/', blank=True, null=True, verbose_name='تصویر کاور')
     published = models.BooleanField(default=False, verbose_name='منتشر شده')
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,

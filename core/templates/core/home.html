@@ -1,108 +1,490 @@
 {% extends "core/base.html" %}
 
-{% block title %}صفحه اصلی{% endblock %}
+{% block title %}صفحه اصلی | مرکز مشاوره روانشناسی{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* === Hero Section === */
+    .hero-section {
+        background: linear-gradient(135deg, #4a90a4 0%, #7bc4c4 100%);
+        color: white;
+        padding: 100px 0 120px;
+        position: relative;
+        overflow: hidden;
+        margin-top: -40px;
+    }
+    
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+        pointer-events: none;
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .hero-title {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        line-height: 1.3;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.3rem;
+        margin-bottom: 35px;
+        opacity: 0.95;
+        line-height: 1.8;
+    }
+    
+    .hero-buttons .btn {
+        padding: 12px 32px;
+        font-size: 1.05rem;
+        font-weight: 600;
+        border-radius: 10px;
+        margin: 5px;
+    }
+    
+    .btn-hero-primary {
+        background: white;
+        color: var(--primary-color);
+        border: none;
+    }
+    
+    .btn-hero-primary:hover {
+        background: #f8f9fa;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    
+    .btn-hero-outline {
+        background: transparent;
+        color: white;
+        border: 2px solid white;
+    }
+    
+    .btn-hero-outline:hover {
+        background: white;
+        color: var(--primary-color);
+    }
+    
+    .hero-image {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+    }
+    
+    .hero-image i {
+        font-size: 12rem;
+        opacity: 0.3;
+    }
+    
+    /* === Services Section === */
+    .section-title {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+    
+    .section-title h2 {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: var(--dark-color);
+        margin-bottom: 15px;
+    }
+    
+    .section-title p {
+        font-size: 1.1rem;
+        color: #666;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .service-card {
+        background: white;
+        border-radius: 16px;
+        padding: 35px 25px;
+        text-align: center;
+        transition: all 0.4s ease;
+        height: 100%;
+        border: 1px solid #f0f0f0;
+    }
+    
+    .service-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(74, 144, 164, 0.15);
+        border-color: var(--primary-color);
+    }
+    
+    .service-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 25px;
+        font-size: 2rem;
+        color: white;
+        transition: transform 0.3s ease;
+    }
+    
+    .service-card:hover .service-icon {
+        transform: rotate(360deg) scale(1.1);
+    }
+    
+    .service-card h3 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--dark-color);
+        margin-bottom: 15px;
+    }
+    
+    .service-card p {
+        color: #666;
+        margin-bottom: 25px;
+        line-height: 1.8;
+    }
+    
+    .service-card .btn {
+        background: var(--primary-color);
+        color: white;
+        padding: 8px 25px;
+        border-radius: 8px;
+    }
+    
+    .service-card .btn:hover {
+        background: #3a7a8c;
+    }
+    
+    /* === Stats Section === */
+    .stats-section {
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        color: white;
+        padding: 70px 0;
+        margin: 80px 0;
+    }
+    
+    .stat-item {
+        text-align: center;
+        padding: 20px;
+    }
+    
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 800;
+        color: var(--accent-color);
+        display: block;
+        margin-bottom: 10px;
+    }
+    
+    .stat-label {
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+    
+    /* === Why Us Section === */
+    .feature-item {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 30px;
+        padding: 25px;
+        background: white;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        border: 1px solid #f0f0f0;
+    }
+    
+    .feature-item:hover {
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        transform: translateX(-5px);
+    }
+    
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+    
+    .feature-content h4 {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: var(--dark-color);
+    }
+    
+    .feature-content p {
+        color: #666;
+        margin: 0;
+        line-height: 1.7;
+    }
+    
+    /* === CTA Section === */
+    .cta-section {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        color: white;
+        padding: 80px 0;
+        text-align: center;
+        border-radius: 20px;
+        margin: 80px auto;
+        max-width: 1140px;
+    }
+    
+    .cta-section h2 {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+    
+    .cta-section p {
+        font-size: 1.15rem;
+        margin-bottom: 30px;
+        opacity: 0.95;
+    }
+    
+    .cta-section .btn {
+        padding: 14px 40px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        background: white;
+        color: var(--primary-color);
+        border-radius: 10px;
+    }
+    
+    .cta-section .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    
+    /* === Responsive === */
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 60px 0 80px;
+        }
+        
+        .hero-title {
+            font-size: 2rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.1rem;
+        }
+        
+        .section-title h2 {
+            font-size: 1.7rem;
+        }
+        
+        .stat-number {
+            font-size: 2.2rem;
+        }
+        
+        .cta-section {
+            padding: 50px 20px;
+            margin: 50px 15px;
+        }
+        
+        .cta-section h2 {
+            font-size: 1.6rem;
+        }
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<section class="hero-section text-center">
+<!-- Hero Section -->
+<section class="hero-section">
     <div class="container">
-        <h1 class="display-4 mb-4">مرکز مشاوره روانشناسی</h1>
-        <p class="lead mb-4">سلامت روان شما اولویت ماست</p>
-        <p class="mb-4">
-            ما با ارائه ابزارهای ارزیابی روانشناختی و مشاوره تخصصی، به شما کمک می‌کنیم
-            تا سلامت روان خود را بهتر درک کنید و قدم‌های موثری برای بهبود آن بردارید.
-        </p>
-        {% if not user.is_authenticated %}
-            <a href="{% url 'register' %}" class="btn btn-light btn-lg me-2">ثبت نام رایگان</a>
-            <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg">ورود</a>
-        {% else %}
-            <a href="{% url 'dashboard' %}" class="btn btn-light btn-lg">رفتن به داشبورد</a>
-        {% endif %}
+        <div class="row align-items-center">
+            <div class="col-lg-6 hero-content fade-in-up">
+                <h1 class="hero-title">سلامت روان شما، اولویت ماست</h1>
+                <p class="hero-subtitle">
+                    با ارائه ابزارهای ارزیابی روانشناختی استاندارد و مشاوره تخصصی،
+                    به شما کمک می‌کنیم تا سلامت روان خود را بهتر درک کنید
+                    و قدم‌های مؤثری برای بهبود آن بردارید.
+                </p>
+                <div class="hero-buttons">
+                    {% if not user.is_authenticated %}
+                        <a href="{% url 'register' %}" class="btn btn-hero-primary">
+                            <i class="bi bi-person-plus me-2"></i>ثبت نام رایگان
+                        </a>
+                        <a href="{% url 'login' %}" class="btn btn-hero-outline">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>ورود
+                        </a>
+                    {% else %}
+                        <a href="{% url 'dashboard' %}" class="btn btn-hero-primary">
+                            <i class="bi bi-speedometer2 me-2"></i>رفتن به داشبورد
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6 hero-image d-none d-lg-block">
+                <i class="bi bi-heart-pulse"></i>
+            </div>
+        </div>
     </div>
 </section>
 
-<section class="py-5">
+<!-- Services Section -->
+<section class="container my-5 py-5">
+    <div class="section-title fade-in-up">
+        <h2>خدمات ما</h2>
+        <p>ابزارهای تخصصی برای ارزیابی و بهبود سلامت روان شما</p>
+    </div>
+    <div class="row g-4">
+        <div class="col-lg-4 col-md-6">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="bi bi-heart"></i>
+                </div>
+                <h3>آزمون افسردگی PHQ-9</h3>
+                <p>ارزیابی سطح افسردگی با استفاده از پرسشنامه استاندارد PHQ-9 و دریافت تفسیر تخصصی نتایج.</p>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'phq9_test' %}" class="btn">شروع آزمون</a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="btn">ثبت نام و شروع</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="bi bi-activity"></i>
+                </div>
+                <h3>آزمون اضطراب GAD-7</h3>
+                <p>ارزیابی سطح اضطراب عمومی با استفاده از پرسشنامه استاندارد GAD-7 و دریافت تفسیر تخصصی.</p>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'gad7_test' %}" class="btn">شروع آزمون</a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="btn">ثبت نام و شروع</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="bi bi-book"></i>
+                </div>
+                <h3>وبلاگ تخصصی</h3>
+                <p>مطالعه مقالات تخصصی در زمینه سلامت روان، مدیریت استرس و بهبود کیفیت زندگی.</p>
+                <a href="{% url 'blog_list' %}" class="btn">مشاهده مقالات</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
     <div class="container">
-        <h2 class="text-center mb-5">خدمات ما</h2>
         <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card feature-card h-100">
-                    <div class="card-body text-center">
-                        <i class="bi bi-clipboard-check display-1 text-primary mb-3"></i>
-                        <h5 class="card-title">آزمون افسردگی PHQ-9</h5>
-                        <p class="card-text">
-                            ارزیابی سطح افسردگی با استفاده از پرسشنامه استاندارد PHQ-9
-                            و دریافت تفسیر تخصصی نتایج.
-                        </p>
-                        {% if user.is_authenticated %}
-                            <a href="{% url 'phq9_test' %}" class="btn btn-primary">شروع آزمون</a>
-                        {% endif %}
-                    </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-item">
+                    <span class="stat-number">۲۵۰۰+</span>
+                    <div class="stat-label">کاربر فعال</div>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card feature-card h-100">
-                    <div class="card-body text-center">
-                        <i class="bi bi-heart-pulse display-1 text-danger mb-3"></i>
-                        <h5 class="card-title">آزمون اضطراب GAD-7</h5>
-                        <p class="card-text">
-                            ارزیابی سطح اضطراب عمومی با استفاده از پرسشنامه استاندارد GAD-7
-                            و دریافت تفسیر تخصصی نتایج.
-                        </p>
-                        {% if user.is_authenticated %}
-                            <a href="{% url 'gad7_test' %}" class="btn btn-danger">شروع آزمون</a>
-                        {% endif %}
-                    </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-item">
+                    <span class="stat-number">۱۰۰۰۰+</span>
+                    <div class="stat-label">آزمون انجام شده</div>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card feature-card h-100">
-                    <div class="card-body text-center">
-                        <i class="bi bi-journal-text display-1 text-success mb-3"></i>
-                        <h5 class="card-title">وبلاگ تخصصی</h5>
-                        <p class="card-text">
-                            مطالعه مقالات تخصصی در زمینه سلامت روان، مدیریت استرس
-                            و بهبود کیفیت زندگی.
-                        </p>
-                        <a href="{% url 'blog_list' %}" class="btn btn-success">مشاهده مقالات</a>
-                    </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-item">
+                    <span class="stat-number">۹۸٪</span>
+                    <div class="stat-label">رضایت کاربران</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-item">
+                    <span class="stat-number">۲۴/۷</span>
+                    <div class="stat-label">پشتیبانی آنلاین</div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<section class="bg-light py-5">
-    <div class="container text-center">
-        <h2 class="mb-4">چرا مرکز ما؟</h2>
-        <div class="row">
-            <div class="col-md-3 mb-3">
-                <div class="p-3">
-                    <i class="bi bi-shield-check display-4 text-primary"></i>
-                    <h5 class="mt-3">امن و محرمانه</h5>
-                    <p>اطلاعات شما کاملاً محرمانه و ایمن نگهداری می‌شود.</p>
+<!-- Why Us Section -->
+<section class="container my-5 py-5">
+    <div class="section-title fade-in-up">
+        <h2>چرا مرکز ما؟</h2>
+        <p>ویژگی‌هایی که ما را از دیگران متمایز می‌کند</p>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="bi bi-shield-check"></i>
+                </div>
+                <div class="feature-content">
+                    <h4>امن و محرمانه</h4>
+                    <p>اطلاعات شما کاملاً محرمانه و با بالاترین استانداردهای امنیتی نگهداری می‌شود.</p>
                 </div>
             </div>
-            <div class="col-md-3 mb-3">
-                <div class="p-3">
-                    <i class="bi bi-speedometer2 display-4 text-success"></i>
-                    <h5 class="mt-3">سریع و آسان</h5>
-                    <p>آزمون‌ها در کمتر از ۵ دقیقه تکمیل می‌شوند.</p>
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="bi bi-lightning"></i>
+                </div>
+                <div class="feature-content">
+                    <h4>سریع و آسان</h4>
+                    <p>آزمون‌ها در کمتر از ۵ دقیقه تکمیل می‌شوند و نتایج فوری دریافت می‌کنید.</p>
                 </div>
             </div>
-            <div class="col-md-3 mb-3">
-                <div class="p-3">
-                    <i class="bi bi-translate display-4 text-info"></i>
-                    <h5 class="mt-3">تفسیر فارسی</h5>
-                    <p>نتایج با تفسیر کامل فارسی ارائه می‌شوند.</p>
+        </div>
+        <div class="col-lg-6">
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="bi bi-translate"></i>
+                </div>
+                <div class="feature-content">
+                    <h4>تفسیر فارسی</h4>
+                    <p>نتایج با تفسیر کامل فارسی و قابل فهم برای همه ارائه می‌شوند.</p>
                 </div>
             </div>
-            <div class="col-md-3 mb-3">
-                <div class="p-3">
-                    <i class="bi bi-graph-up display-4 text-warning"></i>
-                    <h5 class="mt-3">پیگیری پیشرفت</h5>
-                    <p>تاریخچه آزمون‌ها برای پیگیری تغییرات ذخیره می‌شود.</p>
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="bi bi-graph-up"></i>
+                </div>
+                <div class="feature-content">
+                    <h4>پیگیری پیشرفت</h4>
+                    <p>تاریخچه آزمون‌ها برای پیگیری تغییرات وضعیت روانی شما ذخیره می‌شود.</p>
                 </div>
             </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="container">
+    <div class="cta-section fade-in-up">
+        <div class="container">
+            <h2>همین امروز سلامت روان خود را ارزیابی کنید</h2>
+            <p>ثبت نام رایگان است و کمتر از ۱ دقیقه طول می‌کشد</p>
+            {% if not user.is_authenticated %}
+                <a href="{% url 'register' %}" class="btn">
+                    <i class="bi bi-rocket me-2"></i>شروع کنید
+                </a>
+            {% else %}
+                <a href="{% url 'dashboard' %}" class="btn">
+                    <i class="bi bi-speedometer2 me-2"></i>داشبورد من
+                </a>
+            {% endif %}
         </div>
     </div>
 </section>

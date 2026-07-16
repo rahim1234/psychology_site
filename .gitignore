@@ -5,6 +5,7 @@ __pycache__
 db.sqlite3
 staticfiles/
 media/
+private_media/
 *.egg-info/
 dist/
 build/

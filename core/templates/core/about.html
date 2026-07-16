@@ -2,45 +2,175 @@
 
 {% block title %}درباره ما{% endblock %}
 
+{% block extra_css %}
+<style>
+    .page-header {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        color: white;
+        padding: 80px 0;
+        text-align: center;
+        margin-bottom: 60px;
+    }
+    
+    .page-header h1 {
+        font-size: 2.8rem;
+        font-weight: 800;
+        margin-bottom: 15px;
+    }
+    
+    .page-header p {
+        font-size: 1.2rem;
+        opacity: 0.95;
+    }
+    
+    .about-section {
+        background: white;
+        border-radius: 16px;
+        padding: 40px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        border: 1px solid #f0f0f0;
+        transition: transform 0.3s ease;
+    }
+    
+    .about-section:hover {
+        transform: translateY(-5px);
+    }
+    
+    .about-section h2 {
+        color: var(--primary-color);
+        font-weight: 700;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 3px solid var(--primary-color);
+        display: inline-block;
+    }
+    
+    .about-section .icon-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .about-section .icon-header i {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+    }
+    
+    .tools-list {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .tools-list li {
+        padding: 15px 20px;
+        margin-bottom: 10px;
+        background: var(--light-bg);
+        border-radius: 10px;
+        border-right: 4px solid var(--primary-color);
+        transition: all 0.3s ease;
+    }
+    
+    .tools-list li:hover {
+        background: #e9f5f7;
+        transform: translateX(-5px);
+    }
+    
+    .tools-list li strong {
+        color: var(--primary-color);
+    }
+    
+    .alert-warning-custom {
+        background: #fff3cd;
+        border-right: 4px solid #ffc107;
+        border-radius: 10px;
+        padding: 20px;
+        color: #856404;
+    }
+    
+    .alert-warning-custom i {
+        color: #ffc107;
+        font-size: 1.5rem;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h1 class="text-center mb-4">درباره ما</h1>
+<div class="page-header">
+    <div class="container">
+        <h1><i class="bi bi-info-circle me-3"></i>درباره ما</h1>
+        <p>با ما بیشتر آشنا شوید</p>
+    </div>
+</div>
 
-            <div class="card">
-                <div class="card-body">
-                    <h4>مرکز مشاوره روانشناسی</h4>
-                    <p>
-                        مرکز مشاوره روانشناسی با هدف ارتقای سلامت روان جامعه و ارائه خدمات
-                        ارزیابی روانشناختی آنلاین تأسیس شده است. ما باور داریم که هر فردی
-                        حق دارد به ابزارهای ارزیابی سلامت روان دسترسی داشته باشد.
-                    </p>
-
-                    <h4 class="mt-4">مأموریت ما</h4>
-                    <p>
-                        مأموریت ما ارائه ابزارهای ارزیابی دقیق، معتبر و قابل دسترس برای
-                        همه افراد است. ما تلاش می‌کنیم با ارائه نتایج قابل فهم و تفسیر
-                        تخصصی، به افراد کمک کنیم تا وضعیت سلامت روان خود را بهتر درک کنند
-                        و در صورت نیاز، اقدام مناسب انجام دهند.
-                    </p>
-
-                    <h4 class="mt-4">ابزارهای ما</h4>
-                    <ul>
-                        <li><strong>آزمون PHQ-9:</strong> پرسشنامه افسردگی بیمار - یک ابزار استاندارد بین‌المللی برای غربالگری افسردگی</li>
-                        <li><strong>آزمون GAD-7:</strong> پرسشنامه اضطراب عمومی - یک ابزار استاندارد بین‌المللی برای غربالگری اضطراب</li>
-                    </ul>
-                    <p>
-                        هر دو پرسشنامه توسط متخصصان بهداشت روان طراحی شده و در سراسر جهان
-                        مورد استفاده قرار می‌گیرند.
-                    </p>
-
-                    <div class="alert alert-info mt-4">
-                        <strong>توجه:</strong> نتایج آزمون‌های ما جنبه غربالگری دارند و
-                        جایگزین تشخیص تخصصی پزشک نیستند. در صورت نیاز، حتماً با یک متخصص
-                        بهداشت روان مشورت کنید.
-                    </div>
-                </div>
+<div class="container">
+    <!-- معرفی -->
+    <div class="about-section">
+        <div class="icon-header">
+            <i class="bi bi-heart-fill"></i>
+            <h2>مرکز مشاوره روانشناسی</h2>
+        </div>
+        <p style="font-size: 1.1rem; line-height: 2;">
+            مرکز مشاوره روانشناسی با هدف ارتقای سلامت روان جامعه و ارائه خدمات
+            ارزیابی روانشناختی آنلاین تأسیس شده است. ما باور داریم که هر فردی
+            حق دارد به ابزارهای ارزیابی سلامت روان دسترسی داشته باشد.
+        </p>
+    </div>
+    
+    <!-- مأموریت -->
+    <div class="about-section">
+        <div class="icon-header">
+            <i class="bi bi-bullseye"></i>
+            <h2>مأموریت ما</h2>
+        </div>
+        <p style="font-size: 1.1rem; line-height: 2;">
+            مأموریت ما ارائه ابزارهای ارزیابی دقیق، معتبر و قابل دسترس برای
+            همه افراد است. ما تلاش می‌کنیم با ارائه نتایج قابل فهم و تفسیر
+            تخصصی، به افراد کمک کنیم تا وضعیت سلامت روان خود را بهتر درک کنند
+            و در صورت نیاز، اقدام مناسب انجام دهند.
+        </p>
+    </div>
+    
+    <!-- ابزارها -->
+    <div class="about-section">
+        <div class="icon-header">
+            <i class="bi bi-tools"></i>
+            <h2>ابزارهای ما</h2>
+        </div>
+        <ul class="tools-list">
+            <li>
+                <strong><i class="bi bi-heart me-2"></i>آزمون PHQ-9:</strong>
+                پرسشنامه افسردگی بیمار - یک ابزار استاندارد بین‌المللی برای غربالگری افسردگی
+            </li>
+            <li>
+                <strong><i class="bi bi-activity me-2"></i>آزمون GAD-7:</strong>
+                پرسشنامه اضطراب عمومی - یک ابزار استاندارد بین‌المللی برای غربالگری اضطراب
+            </li>
+        </ul>
+        <p class="mt-3">
+            هر دو پرسشنامه توسط متخصصان بهداشت روان طراحی شده و در سراسر جهان
+            مورد استفاده قرار می‌گیرند.
+        </p>
+    </div>
+    
+    <!-- هشدار -->
+    <div class="alert-warning-custom">
+        <div class="d-flex align-items-start gap-3">
+            <i class="bi bi-exclamation-triangle"></i>
+            <div>
+                <strong style="font-size: 1.1rem;">توجه مهم:</strong>
+                <p class="mb-0 mt-2">
+                    نتایج آزمون‌های ما جنبه غربالگری دارند و جایگزین تشخیص تخصصی
+                    پزشک نیستند. در صورت نیاز، حتماً با یک متخصص بهداشت روان مشورت کنید.
+                </p>
             </div>
         </div>
     </div>
