@@ -63,33 +63,29 @@ class ProfileAttachmentForm(forms.ModelForm):
         fields = ('file', 'upload_date', 'description')
 
 
+
+
 class ProfileAttachmentInline(admin.TabularInline):
-    """Where the secretary uploads files.
-
-    Only 'add' + 'view' permission is granted to the secretary group (see
-    the `setup_secretary_group` management command) — no 'change'/'delete',
-    so once a file is uploaded it can't be replaced or removed by the
-    secretary, only by the therapist/superuser.
-
-    Additionally, `get_queryset` returns an empty queryset for the
-    secretary, so they never see previously uploaded files (the user's
-    request explicitly says the secretary must not have access to
-    previous user information). They only see one empty row at the bottom
-    of the inline for adding a new file with a date."""
-
     model = ProfileAttachment
     form = ProfileAttachmentForm
-    extra = 1
     fields = ('file', 'upload_date', 'description', 'file_link', 'uploaded_by', 'uploaded_at')
     readonly_fields = ('file_link', 'uploaded_by', 'uploaded_at')
     verbose_name = 'فایل پیوست'
     verbose_name_plural = 'فایل‌های پیوست پروفایل'
 
+    def get_extra(self, request, obj=None, **kwargs):
+        """
+        برای منشی: همیشه یک فرم خالی نمایش بده (چون کار اصلی‌اش آپلود فایل است)
+        برای درمانگر: هیچ فرم خالی نمایش نده (چون معمولاً فقط یادداشت ثبت می‌کند)
+        درمانگر در صورت نیاز می‌تواند روی "Add another" کلیک کند.
+        """
+        if is_secretary(request.user):
+            return 1
+        return 0
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if is_secretary(request.user):
-            # Secretary never sees previously uploaded files — they only
-            # see the empty "add new file" row at the bottom.
             return qs.none()
         return qs
 
@@ -99,6 +95,9 @@ class ProfileAttachmentInline(admin.TabularInline):
             return format_html('<a href="{}" target="_blank">دانلود / مشاهده فایل</a>', url)
         return '—'
     file_link.short_description = 'لینک فایل'
+
+
+
 
 
 @admin.register(Profile)
@@ -186,11 +185,20 @@ class ProfileAdmin(admin.ModelAdmin):
         try:
             profile = self.get_object(request, object_id)
             if profile and hasattr(profile.user, 'phq9_results') and not is_secretary(request.user):
+                # آزمون‌های قبلی
                 extra_context['phq9_results'] = profile.user.phq9_results.all()
                 extra_context['gad7_results'] = profile.user.gad7_results.all()
+                
+                # آزمون‌های جدید
+                extra_context['bdi_results'] = profile.user.bdi_results.all()
+                extra_context['bai_results'] = profile.user.bai_results.all()
+                extra_context['mcmi4_results'] = profile.user.mcmi4_results.all()
         except Exception:
             extra_context['phq9_results'] = []
             extra_context['gad7_results'] = []
+            extra_context['bdi_results'] = []
+            extra_context['bai_results'] = []
+            extra_context['mcmi4_results'] = []
         return super().change_view(request, object_id, form_url, extra_context=extra_context)
 
     # ---- Therapist-only helpers ---------------------------------------

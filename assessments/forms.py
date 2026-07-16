@@ -25,3 +25,77 @@ class GAD7TestForm(forms.Form):
                 widget=forms.RadioSelect(attrs={'class': 'form-check-input'}),
                 required=True,
             )
+
+
+class BDITestForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for i, question in enumerate(BDI_QUESTIONS, 1):
+            self.fields[f'q{i}'] = forms.ChoiceField(
+                label=f'{i}. {question["text"]}',
+                choices=question['options'],
+                widget=forms.RadioSelect(attrs={'class': 'form-check-input'}),
+                required=True,
+            )
+
+
+class BAITestForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for i, question in enumerate(BAI_QUESTIONS, 1):
+            self.fields[f'q{i}'] = forms.ChoiceField(
+                label=f'{i}. {question}',
+                choices=BAI_ANSWERS,
+                widget=forms.RadioSelect(attrs={'class': 'form-check-input'}),
+                required=True,
+            )
+
+
+class MCMI4TestForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for i, question in enumerate(MCMI4_QUESTIONS, 1):
+            self.fields[f'q{i}'] = forms.ChoiceField(
+                label=f'{i}. {question}',
+                choices=MCMI4_ANSWERS,
+                widget=forms.RadioSelect(attrs={'class': 'form-check-input'}),
+                required=True,
+            )
+
+from .scoring import BDI_QUESTIONS, BAI_QUESTIONS, BAI_ANSWERS, MCMI4_QUESTIONS, MCMI4_ANSWERS
+
+
+class BDITestForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for i, question in enumerate(BDI_QUESTIONS, 1):
+            self.fields[f'q{i}'] = forms.ChoiceField(
+                label=f'{i}. {question["text"]}',
+                choices=question['options'],
+                widget=forms.RadioSelect(attrs={'class': 'form-check-input'}),
+                required=True,
+            )
+
+
+class BAITestForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for i, question in enumerate(BAI_QUESTIONS, 1):
+            self.fields[f'q{i}'] = forms.ChoiceField(
+                label=f'{i}. {question}',
+                choices=BAI_ANSWERS,
+                widget=forms.RadioSelect(attrs={'class': 'form-check-input'}),
+                required=True,
+            )
+
+
+class MCMI4TestForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for i, question in enumerate(MCMI4_QUESTIONS, 1):
+            self.fields[f'q{i}'] = forms.ChoiceField(
+                label=f'{i}. {question}',
+                choices=MCMI4_ANSWERS,
+                widget=forms.RadioSelect(attrs={'class': 'form-check-input'}),
+                required=True,
+            )

@@ -8,8 +8,7 @@ from django.http import FileResponse, Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from django.views.generic import TemplateView
-
-from assessments.models import GAD7Result, PHQ9Result
+from assessments.models import GAD7Result, PHQ9Result, BDIResult, BAIResult, MCMI4Result
 from .forms import ProfileForm
 from .models import ProfileAttachment, SessionNote
 
@@ -58,6 +57,9 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context['profile'] = getattr(self.request.user, 'profile', None)
         context['phq9_results'] = PHQ9Result.objects.filter(user=self.request.user)[:5]
         context['gad7_results'] = GAD7Result.objects.filter(user=self.request.user)[:5]
+        context['bdi_results'] = BDIResult.objects.filter(user=self.request.user)[:3]
+        context['bai_results'] = BAIResult.objects.filter(user=self.request.user)[:3]
+        context['mcmi4_results'] = MCMI4Result.objects.filter(user=self.request.user)[:3]
         return context
 
 

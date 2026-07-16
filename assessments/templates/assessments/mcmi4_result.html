@@ -1,0 +1,216 @@
+{% extends "core/base.html" %}
+
+{% block title %}نتایج آزمون MCMI-4{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-warning text-dark">
+            <h3 class="mb-0">
+                <i class="fas fa-user-md"></i> نتایج آزمون MCMI-4
+            </h3>
+        </div>
+        <div class="card-body">
+            
+            <!-- هشدار مهم -->
+            <div class="alert alert-danger">
+                <h5><i class="fas fa-exclamation-triangle"></i> هشدار مهم</h5>
+                <p>این نتایج فقط <strong>تفسیر غربالگری</strong> هستند و برای تشخیص بالینی نیاز به:</p>
+                <ul>
+                    <li>Manual رسمی MCMI-4 برای BR scores</li>
+                    <li>مصاحبه بالینی تکمیلی</li>
+                    <li>تحلیل توسط روانشناس دارای مجوز</li>
+                </ul>
+            </div>
+
+            <!-- اطلاعات کلی -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <p><strong>تاریخ آزمون:</strong> {{ result.created_at|date:"Y/m/d H:i" }}</p>
+                </div>
+            </div>
+
+            <!-- پرچم‌های بالینی -->
+            {% if interpretation_data.clinical_flags %}
+            <div class="alert alert-warning">
+                <h5><i class="fas fa-flag"></i> پرچم‌های بالینی</h5>
+                <ul>
+                    {% for flag in interpretation_data.clinical_flags %}
+                    <li>{{ flag }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <!-- توصیه‌ها -->
+            {% if interpretation_data.recommendations %}
+            <div class="alert alert-info">
+                <h5><i class="fas fa-lightbulb"></i> توصیه‌ها</h5>
+                <ul>
+                    {% for rec in interpretation_data.recommendations %}
+                    <li>{{ rec }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <!-- مقیاس‌های اعتبارسنجی -->
+            <h4 class="mt-4 mb-3 text-primary">
+                <i class="fas fa-check-circle"></i> مقیاس‌های اعتبارسنجی
+            </h4>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>مقیاس</th>
+                            <th>نمره</th>
+                            <th>سطح</th>
+                            <th>تفسیر</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, data in interpretation_data.validity.items %}
+                        <tr>
+                            <td><strong>{{ key }}</strong></td>
+                            <td>{{ data.raw_score }}</td>
+                            <td>{{ data.label }}</td>
+                            <td>{{ data.interpretation }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- الگوهای شخصیت بالینی -->
+            <h4 class="mt-4 mb-3 text-success">
+                <i class="fas fa-users"></i> الگوهای شخصیت بالینی
+            </h4>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-success">
+                        <tr>
+                            <th>مقیاس</th>
+                            <th>نمره</th>
+                            <th>Cut-off</th>
+                            <th>سطح</th>
+                            <th>تفسیر</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, data in interpretation_data.personality.items %}
+                        <tr class="{% if data.level == 'clinical' %}table-danger{% elif data.level == 'elevated' %}table-warning{% endif %}">
+                            <td><strong>{{ data.name }}</strong></td>
+                            <td>{{ data.raw_score }}</td>
+                            <td>{{ data.cutoff }}</td>
+                            <td>
+                                {% if data.level == 'clinical' %}
+                                    <span class="badge bg-danger">بالینی</span>
+                                {% elif data.level == 'elevated' %}
+                                    <span class="badge bg-warning">بالا</span>
+                                {% else %}
+                                    <span class="badge bg-success">طبیعی</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ data.interpretation }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- سندرم‌های بالینی -->
+            <h4 class="mt-4 mb-3 text-info">
+                <i class="fas fa-heartbeat"></i> سندرم‌های بالینی
+            </h4>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-info">
+                        <tr>
+                            <th>مقیاس</th>
+                            <th>نمره</th>
+                            <th>Cut-off</th>
+                            <th>سطح</th>
+                            <th>تفسیر</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, data in interpretation_data.clinical.items %}
+                        <tr class="{% if data.level == 'clinical' %}table-danger{% elif data.level == 'elevated' %}table-warning{% endif %}">
+                            <td><strong>{{ data.name }}</strong></td>
+                            <td>{{ data.raw_score }}</td>
+                            <td>{{ data.cutoff }}</td>
+                            <td>
+                                {% if data.level == 'clinical' %}
+                                    <span class="badge bg-danger">بالینی</span>
+                                {% elif data.level == 'elevated' %}
+                                    <span class="badge bg-warning">بالا</span>
+                                {% else %}
+                                    <span class="badge bg-success">طبیعی</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ data.interpretation }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- سندرم‌های شدید -->
+            {% if interpretation_data.severe %}
+            <h4 class="mt-4 mb-3 text-danger">
+                <i class="fas fa-exclamation-circle"></i> سندرم‌های شدید
+            </h4>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-danger">
+                        <tr>
+                            <th>مقیاس</th>
+                            <th>نمره</th>
+                            <th>Cut-off</th>
+                            <th>سطح</th>
+                            <th>تفسیر</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, data in interpretation_data.severe.items %}
+                        <tr class="{% if data.level == 'clinical' %}table-danger{% elif data.level == 'elevated' %}table-warning{% endif %}">
+                            <td><strong>{{ data.name }}</strong></td>
+                            <td>{{ data.raw_score }}</td>
+                            <td>{{ data.cutoff }}</td>
+                            <td>
+                                {% if data.level == 'clinical' %}
+                                    <span class="badge bg-danger">بالینی</span>
+                                {% elif data.level == 'elevated' %}
+                                    <span class="badge bg-warning">بالا</span>
+                                {% else %}
+                                    <span class="badge bg-success">طبیعی</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ data.interpretation }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+            <!-- راهنمای تفسیر -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle"></i> راهنمای تفسیر</h5>
+                <pre style="white-space: pre-wrap; font-family: inherit;">{{ interpretation_guide }}</pre>
+            </div>
+
+            <!-- دکمه‌های عملیات -->
+            <div class="mt-4">
+                <a href="{% url 'dashboard' %}" class="btn btn-primary">
+                    <i class="fas fa-arrow-right"></i> بازگشت به داشبورد
+                </a>
+                <button onclick="window.print()" class="btn btn-secondary">
+                    <i class="fas fa-print"></i> چاپ نتایج
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from .models import PHQ9Result, GAD7Result
+from .models import (
+    PHQ9Result, GAD7Result,
+    BDIResult, BAIResult, MCMI4Result,
+)
 
 
 @admin.register(PHQ9Result)
@@ -73,3 +76,27 @@ class GAD7ResultAdmin(admin.ModelAdmin):
             answers_text.append(f'{label}: <strong>{val}</strong>')
         return mark_safe('<br>'.join(answers_text))
     answers_formatted.short_description = 'پاسخ‌ها (formatted)'
+
+
+@admin.register(BDIResult)
+class BDIResultAdmin(admin.ModelAdmin):
+    list_display = ('user', 'score', 'severity', 'created_at')
+    list_filter = ('severity', 'created_at')
+    search_fields = ('user__email', 'user__username')
+    readonly_fields = ('created_at',)
+
+
+@admin.register(BAIResult)
+class BAIResultAdmin(admin.ModelAdmin):
+    list_display = ('user', 'score', 'severity', 'created_at')
+    list_filter = ('severity', 'created_at')
+    search_fields = ('user__email', 'user__username')
+    readonly_fields = ('created_at',)
+
+
+@admin.register(MCMI4Result)
+class MCMI4ResultAdmin(admin.ModelAdmin):
+    list_display = ('user', 'score', 'created_at')
+    list_filter = ('created_at',)
+    search_fields = ('user__email', 'user__username')
+    readonly_fields = ('created_at',)

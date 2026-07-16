@@ -6,63 +6,345 @@
 
 {% if original and show_test_results %}
 <fieldset class="module aligned">
-    <h2>نتایج آزمون‌ها</h2>
+    <h2 style="background: linear-gradient(135deg, #417690, #79aec8); color: white; padding: 12px 20px; margin: -10px -10px 20px -10px; border-radius: 4px;">
+        📊 نتایج آزمون‌های روان‌شناختی
+    </h2>
 
-    <div class="form-row">
-        <div class="flex-container">
-            <div style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin: 5px;">
-                <h3 style="color: #0d6efd;">PHQ-9 (افسردگی)</h3>
+    <style>
+        .test-results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .test-card {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #e0e0e0;
+            background: white;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .test-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+        .test-card-header {
+            padding: 12px 16px;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .test-card-body {
+            padding: 0;
+        }
+        .test-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .test-table th {
+            background: #f8f9fa;
+            padding: 8px 12px;
+            text-align: right;
+            font-weight: 600;
+            border-bottom: 2px solid #e0e0e0;
+            font-size: 0.85rem;
+            color: #555;
+        }
+        .test-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .test-table tr:last-child td {
+            border-bottom: none;
+        }
+        .test-table tr:hover {
+            background: #fafbfc;
+        }
+        .score-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        .no-results {
+            padding: 20px;
+            text-align: center;
+            color: #999;
+            font-style: italic;
+        }
+        .test-count {
+            background: rgba(255,255,255,0.3);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+        }
+        /* رنگ‌های مختلف برای هر آزمون */
+        .header-phq9 { background: linear-gradient(135deg, #28a745, #48c764); }
+        .header-gad7 { background: linear-gradient(135deg, #ffc107, #ffdb4d); color: #333; }
+        .header-bdi { background: linear-gradient(135deg, #17a2b8, #3fc0d4); }
+        .header-bai { background: linear-gradient(135deg, #dc3545, #e85d6c); }
+        .header-mcmi4 { background: linear-gradient(135deg, #6f42c1, #8f67d8); }
+        
+        .test-summary {
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+            font-size: 0.85rem;
+            color: #666;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+
+    <div class="test-results-grid">
+        
+        <!-- PHQ-9: آزمون افسردگی -->
+        <div class="test-card">
+            <div class="test-card-header header-phq9">
+                <span>❤️ PHQ-9 (افسردگی)</span>
                 {% if phq9_results %}
-                    <table style="width: 100%; border-collapse: collapse;">
+                    <span class="test-count">{{ phq9_results|length }} نتیجه</span>
+                {% endif %}
+            </div>
+            <div class="test-card-body">
+                {% if phq9_results %}
+                    <table class="test-table">
                         <thead>
-                            <tr style="background: #f8f9fa;">
-                                <th style="padding: 8px; border: 1px solid #ddd;">تاریخ</th>
-                                <th style="padding: 8px; border: 1px solid #ddd;">امتیاز</th>
-                                <th style="padding: 8px; border: 1px solid #ddd;">شدت</th>
+                            <tr>
+                                <th>تاریخ</th>
+                                <th>امتیاز</th>
+                                <th>شدت</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for r in phq9_results %}
                             <tr>
-                                <td style="padding: 8px; border: 1px solid #ddd;">{{ r.created_at|date:"Y/m/d H:i" }}</td>
-                                <td style="padding: 8px; border: 1px solid #ddd; text-align: center; font-weight: bold;">{{ r.score }}</td>
-                                <td style="padding: 8px; border: 1px solid #ddd;">{{ r.get_severity_display }}</td>
+                                <td>{{ r.created_at|date:"Y/m/d H:i" }}</td>
+                                <td><span class="score-badge">{{ r.score }}</span></td>
+                                <td>{{ r.get_severity_display }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
+                    <div class="test-summary">
+                        <span>آخرین: {{ phq9_results.0.score }}</span>
+                        <span>{{ phq9_results.0.get_severity_display }}</span>
+                    </div>
                 {% else %}
-                    <p style="color: #6c757d;">هنوز آزمونی انجام نشده است.</p>
+                    <p class="no-results">هنوز آزمونی انجام نشده</p>
                 {% endif %}
             </div>
+        </div>
 
-            <div style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin: 5px;">
-                <h3 style="color: #dc3545;">GAD-7 (اضطراب)</h3>
+        <!-- GAD-7: آزمون اضطراب -->
+        <div class="test-card">
+            <div class="test-card-header header-gad7">
+                <span>🧠 GAD-7 (اضطراب)</span>
                 {% if gad7_results %}
-                    <table style="width: 100%; border-collapse: collapse;">
+                    <span class="test-count">{{ gad7_results|length }} نتیجه</span>
+                {% endif %}
+            </div>
+            <div class="test-card-body">
+                {% if gad7_results %}
+                    <table class="test-table">
                         <thead>
-                            <tr style="background: #f8f9fa;">
-                                <th style="padding: 8px; border: 1px solid #ddd;">تاریخ</th>
-                                <th style="padding: 8px; border: 1px solid #ddd;">امتیاز</th>
-                                <th style="padding: 8px; border: 1px solid #ddd;">شدت</th>
+                            <tr>
+                                <th>تاریخ</th>
+                                <th>امتیاز</th>
+                                <th>شدت</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for r in gad7_results %}
                             <tr>
-                                <td style="padding: 8px; border: 1px solid #ddd;">{{ r.created_at|date:"Y/m/d H:i" }}</td>
-                                <td style="padding: 8px; border: 1px solid #ddd; text-align: center; font-weight: bold;">{{ r.score }}</td>
-                                <td style="padding: 8px; border: 1px solid #ddd;">{{ r.get_severity_display }}</td>
+                                <td>{{ r.created_at|date:"Y/m/d H:i" }}</td>
+                                <td><span class="score-badge">{{ r.score }}</span></td>
+                                <td>{{ r.get_severity_display }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
+                    <div class="test-summary">
+                        <span>آخرین: {{ gad7_results.0.score }}</span>
+                        <span>{{ gad7_results.0.get_severity_display }}</span>
+                    </div>
                 {% else %}
-                    <p style="color: #6c757d;">هنوز آزمونی انجام نشده است.</p>
+                    <p class="no-results">هنوز آزمونی انجام نشده</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- BDI-II: آزمون افسردگی Beck -->
+        <div class="test-card">
+            <div class="test-card-header header-bdi">
+                <span>📋 BDI-II (افسردگی Beck)</span>
+                {% if bdi_results %}
+                    <span class="test-count">{{ bdi_results|length }} نتیجه</span>
+                {% endif %}
+            </div>
+            <div class="test-card-body">
+                {% if bdi_results %}
+                    <table class="test-table">
+                        <thead>
+                            <tr>
+                                <th>تاریخ</th>
+                                <th>امتیاز</th>
+                                <th>شدت</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in bdi_results %}
+                            <tr>
+                                <td>{{ r.created_at|date:"Y/m/d H:i" }}</td>
+                                <td><span class="score-badge">{{ r.score }}</span></td>
+                                <td>{{ r.get_severity_display }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="test-summary">
+                        <span>آخرین: {{ bdi_results.0.score }}</span>
+                        <span>{{ bdi_results.0.get_severity_display }}</span>
+                    </div>
+                {% else %}
+                    <p class="no-results">هنوز آزمونی انجام نشده</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- BAI: آزمون اضطراب Beck -->
+        <div class="test-card">
+            <div class="test-card-header header-bai">
+                <span>⚠️ BAI (اضطراب Beck)</span>
+                {% if bai_results %}
+                    <span class="test-count">{{ bai_results|length }} نتیجه</span>
+                {% endif %}
+            </div>
+            <div class="test-card-body">
+                {% if bai_results %}
+                    <table class="test-table">
+                        <thead>
+                            <tr>
+                                <th>تاریخ</th>
+                                <th>امتیاز</th>
+                                <th>شدت</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in bai_results %}
+                            <tr>
+                                <td>{{ r.created_at|date:"Y/m/d H:i" }}</td>
+                                <td><span class="score-badge">{{ r.score }}</span></td>
+                                <td>{{ r.get_severity_display }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="test-summary">
+                        <span>آخرین: {{ bai_results.0.score }}</span>
+                        <span>{{ bai_results.0.get_severity_display }}</span>
+                    </div>
+                {% else %}
+                    <p class="no-results">هنوز آزمونی انجام نشده</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- MCMI-4: آزمون شخصیت میلون -->
+        <div class="test-card">
+            <div class="test-card-header header-mcmi4">
+                <span>👤 MCMI-4 (شخصیت میلون)</span>
+                {% if mcmi4_results %}
+                    <span class="test-count">{{ mcmi4_results|length }} نتیجه</span>
+                {% endif %}
+            </div>
+            <div class="test-card-body">
+                {% if mcmi4_results %}
+                    <table class="test-table">
+                        <thead>
+                            <tr>
+                                <th>تاریخ</th>
+                                <th>امتیاز خام</th>
+                                <th>وضعیت</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in mcmi4_results %}
+                            <tr>
+                                <td>{{ r.created_at|date:"Y/m/d H:i" }}</td>
+                                <td><span class="score-badge">{{ r.score }}</span></td>
+                                <td style="color: #6f42c1; font-size: 0.85rem;">نیاز به تفسیر متخصص</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="test-summary">
+                        <span>آخرین: {{ mcmi4_results.0.score }}</span>
+                        <span style="color: #6f42c1;">تفسیر تخصصی</span>
+                    </div>
+                {% else %}
+                    <p class="no-results">هنوز آزمونی انجام نشده</p>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+    <!-- خلاصه کلی -->
+    <div style="background: #f0f7ff; padding: 15px 20px; border-radius: 8px; border-right: 4px solid #417690; margin-top: 20px;">
+        <strong style="color: #417690;">📈 خلاصه وضعیت کاربر:</strong>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-top: 10px;">
+            <div>
+                <small style="color: #666;">PHQ-9:</small>
+                {% if phq9_results %}
+                    <strong>{{ phq9_results.0.score }}</strong> ({{ phq9_results.0.get_severity_display }})
+                {% else %}
+                    <span style="color: #999;">-</span>
+                {% endif %}
+            </div>
+            <div>
+                <small style="color: #666;">GAD-7:</small>
+                {% if gad7_results %}
+                    <strong>{{ gad7_results.0.score }}</strong> ({{ gad7_results.0.get_severity_display }})
+                {% else %}
+                    <span style="color: #999;">-</span>
+                {% endif %}
+            </div>
+            <div>
+                <small style="color: #666;">BDI-II:</small>
+                {% if bdi_results %}
+                    <strong>{{ bdi_results.0.score }}</strong> ({{ bdi_results.0.get_severity_display }})
+                {% else %}
+                    <span style="color: #999;">-</span>
+                {% endif %}
+            </div>
+            <div>
+                <small style="color: #666;">BAI:</small>
+                {% if bai_results %}
+                    <strong>{{ bai_results.0.score }}</strong> ({{ bai_results.0.get_severity_display }})
+                {% else %}
+                    <span style="color: #999;">-</span>
+                {% endif %}
+            </div>
+            <div>
+                <small style="color: #666;">MCMI-4:</small>
+                {% if mcmi4_results %}
+                    <strong>{{ mcmi4_results.0.score }}</strong>
+                {% else %}
+                    <span style="color: #999;">-</span>
                 {% endif %}
             </div>
         </div>
     </div>
+
 </fieldset>
 {% endif %}
 {% endblock %}
