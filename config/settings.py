@@ -36,7 +36,10 @@ INSTALLED_APPS = [
     'core',
     'ckeditor',
     'ckeditor_uploader',
+    'captcha',
+    'django.contrib.sitemaps',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -186,3 +189,88 @@ CKEDITOR_CONFIGS = {
     }
 }
 
+# ============================================================================
+# 🔒 SECURITY SETTINGS - Session Management
+# ============================================================================
+
+# نشست کاربر بعد از 30 دقیقه عدم فعالیت منقضی می‌شود
+SESSION_COOKIE_AGE = 1800  # 30 دقیقه (به ثانیه)
+
+# با بستن مرورگر، نشست پاک می‌شود
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# هر درخواست، عمر نشست را تمدید می‌کند (sliding session)
+SESSION_SAVE_EVERY_REQUEST = True
+
+# cookie نشست فقط از طریق HTTPS ارسال شود (در production)
+# SESSION_COOKIE_SECURE = True  # فقط در production فعال شود
+
+# جلوگیری از دسترسی JavaScript به cookie نشست
+SESSION_COOKIE_HTTPONLY = True
+
+# cookie نشست فقط در همان سایت استفاده شود (جلوگیری از CSRF)
+SESSION_COOKIE_SAMESITE = 'Lax'
+
+# نام cookie نشست (غیرقابل حدس زدن)
+SESSION_COOKIE_NAME = 'psych_session_id'
+
+# ============================================================================
+# 🔒 SECURITY SETTINGS - HTTP Security Headers
+# ============================================================================
+
+# جلوگیری از Clickjacking (سایت شما در iframe نمایش داده نشود)
+X_FRAME_OPTIONS = 'DENY'
+
+# فعال کردن XSS Filter در مرورگر
+SECURE_BROWSER_XSS_FILTER = True
+
+# جلوگیری از MIME type sniffing
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# جلوگیری از نمایش سایت در نتایج جستجو (اگر سایت خصوصی است)
+# SECURE_REFERRER_POLICY = 'same-origin'
+
+# ============================================================================
+# 🌐 HTTPS Settings (فقط در Production فعال شود)
+# ============================================================================
+# SECURE_SSL_REDIRECT = True
+# SECURE_HSTS_SECONDS = 31536000  # 1 year
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_HSTS_PRELOAD = True
+# CSRF_COOKIE_SECURE = True
+
+# ============================================================================
+# 🔒 Rate Limiting Settings
+# ============================================================================
+
+# فعال‌سازی Rate Limiting
+RATELIMIT_ENABLE = True
+
+# روش بررسی: بر اساس IP (مناسب برای جلوگیری از حملات)
+RATELIMIT_VIEW = 'accounts.views.ratelimited_error'
+
+# استفاده از cache برای شمارش درخواست‌ها
+# از cache حافظه (ساده‌ترین) استفاده می‌کنیم
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'ratelimit-cache',
+    }
+}
+# پشت پروکسی بودن (برای production با Nginx)
+RATELIMIT_USE_X_FORWARDED_FOR = True
+# پیام خطای سفارشی وقتی rate limit زده شد
+RATELIMIT_ERROR_MESSAGE = 'تعداد درخواست‌های شما بیش از حد مجاز است. لطفاً چند دقیقه دیگر دوباره تلاش کنید.'
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    # ✅ اضافه شده: Rate Limit Middleware (باید آخر باشد)
+    'accounts.middleware.RatelimitMiddleware',
+]

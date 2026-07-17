@@ -5,6 +5,7 @@ from django.shortcuts import redirect, render
 from django.views import View
 from django.views.decorators.http import require_POST
 from django.utils.decorators import method_decorator
+from django_ratelimit.decorators import ratelimit
 
 from .forms import CustomAuthenticationForm, CustomUserCreationForm, VerificationCodeForm
 from .models import EmailVerification
@@ -15,6 +16,23 @@ User = get_user_model()
 PENDING_USER_SESSION_KEY = 'pending_verification_user_id'
 
 
+# ============================================================================
+# 🔒 View سفارشی برای نمایش خطای Rate Limit (429)
+# ============================================================================
+def ratelimited_error(request, exception=None):
+    """
+    View سفارشی برای نمایش صفحه 429 Too Many Requests.
+    """
+    return render(request, 'accounts/ratelimited.html', status=429)
+
+
+# ============================================================================
+# ثبت نام با Rate Limit: 3 بار در ساعت
+# ============================================================================
+@method_decorator(
+    ratelimit(key='ip', rate='3/h', method='POST', block=True),
+    name='dispatch'
+)
 class RegisterView(View):
     def get(self, request):
         if request.user.is_authenticated:
@@ -42,6 +60,13 @@ class RegisterView(View):
         return render(request, 'accounts/register.html', {'form': form})
 
 
+# ============================================================================
+# تایید ایمیل با Rate Limit: 10 بار در دقیقه (جلوگیری از حدس کد)
+# ============================================================================
+@method_decorator(
+    ratelimit(key='ip', rate='10/m', method='POST', block=True),
+    name='dispatch'
+)
 class VerifyEmailView(View):
     def _get_pending_user(self, request):
         user_id = request.session.get(PENDING_USER_SESSION_KEY)
@@ -89,7 +114,14 @@ class VerifyEmailView(View):
         return render(request, 'accounts/verify_email.html', {'form': form, 'email': user.email})
 
 
+# ============================================================================
+# ارسال مجدد کد تایید: 3 بار در ساعت (جلوگیری از spam ایمیل)
+# ============================================================================
 @method_decorator(require_POST, name='dispatch')
+@method_decorator(
+    ratelimit(key='ip', rate='3/h', method='POST', block=True),
+    name='dispatch'
+)
 class ResendVerificationView(View):
     def post(self, request):
         user_id = request.session.get(PENDING_USER_SESSION_KEY)
@@ -114,6 +146,13 @@ class ResendVerificationView(View):
         return redirect('verify_email')
 
 
+# ============================================================================
+# ورود با Rate Limit: 5 بار در دقیقه (جلوگیری از brute force)
+# ============================================================================
+@method_decorator(
+    ratelimit(key='ip', rate='5/m', method='POST', block=True),
+    name='dispatch'
+)
 class LoginView(View):
     def get(self, request):
         if request.user.is_authenticated:

@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+
+# صفحات عمومی (اجازه ایندکس)
+Allow: /about/
+Allow: /contact/
+Allow: /blog/
+
+# صفحات خصوصی (ممنوع)
+Disallow: /admin/
+Disallow: /accounts/
+Disallow: /profile/
+Disallow: /assessments/
+Disallow: /captcha/
+Disallow: /ckeditor/
+Disallow: /media/private_media/
+
+# فایل‌های سیستمی
+Disallow: /*.json$
+Disallow: /*.xml$
+
+# آدرس Sitemap
+Sitemap: https://your-domain.com/sitemap.xml

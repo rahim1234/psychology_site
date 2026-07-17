@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.password_validation import password_validators_help_text_html
+from captcha.fields import CaptchaField
+from core.honeypot import HoneypotField
 
 User = get_user_model()
 
@@ -24,10 +26,16 @@ class CustomUserCreationForm(UserCreationForm):
         label='تکرار رمز عبور',
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'تکرار رمز عبور'})
     )
-
+    captcha = CaptchaField(
+    label='کد امنیتی',
+    error_messages={'invalid': 'کد امنیتی وارد شده صحیح نیست.'}
+    )
+    
+        # ✅ Honeypot field - باید خالی بماند
+    website_url = HoneypotField()
     class Meta:
         model = User
-        fields = ('email', 'username', 'password1', 'password2')
+        fields = ('email', 'username', 'password1', 'password2', 'captcha')
 
     def clean_email(self):
         email = self.cleaned_data['email'].strip().lower()
@@ -57,6 +65,9 @@ class CustomAuthenticationForm(AuthenticationForm):
         label='رمز عبور',
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'رمز عبور'})
     )
+
+    # ✅ Honeypot برای Login
+    company_name = HoneypotField()
 
     error_messages = {
         **AuthenticationForm.error_messages,
