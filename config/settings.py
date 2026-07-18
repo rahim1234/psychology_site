@@ -21,7 +21,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv(
 CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='', cast=Csv())
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'core.admin_site.RateLimitedAdminConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -40,16 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
 ]
 
-
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
 
 ROOT_URLCONF = 'config.urls'
 
@@ -81,7 +71,8 @@ DATABASES = {
 AUTH_USER_MODEL = 'accounts.User'
 
 AUTHENTICATION_BACKENDS = [
-    'accounts.backends.EmailBackend',
+    'accounts.backends.PhoneNumberBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -117,10 +108,30 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
-# --- Email (used for the signup verification-code flow) -------------------
-# In development, codes are printed to the console by default so no real
-# mail server is required. In production, set EMAIL_BACKEND and the SMTP
-# variables below in your .env file.
+# --- SMS (used for the signup verification-code flow) ----------------------
+# In development, codes are printed to the console/log by default so no real
+# SMS-provider account is required. In production, set SMS_BACKEND to a class
+# that actually calls a provider's API (see accounts/sms_backends.py) and fill
+# in that provider's credentials below.
+SMS_BACKEND = config(
+    'SMS_BACKEND',
+    default='accounts.sms_backends.ConsoleSMSBackend' if DEBUG else 'accounts.sms_backends.PlaceholderSMSBackend',
+)
+# Generic placeholders for whichever SMS gateway you plug in
+# (Kavenegar / MeliPayamak / sms.ir / ...) — read them from
+# accounts/sms_backends.py's PlaceholderSMSBackend once it's implemented.
+SMS_API_URL = config('SMS_API_URL', default='')
+SMS_API_KEY = config('SMS_API_KEY', default='')
+SMS_SENDER_NUMBER = config('SMS_SENDER_NUMBER', default='')
+
+# Phone-verification code behaviour (accounts app)
+PHONE_VERIFICATION_TTL_MINUTES = config('PHONE_VERIFICATION_TTL_MINUTES', default=10, cast=int)
+PHONE_VERIFICATION_MAX_ATTEMPTS = config('PHONE_VERIFICATION_MAX_ATTEMPTS', default=5, cast=int)
+PHONE_VERIFICATION_RESEND_COOLDOWN_SECONDS = config('PHONE_VERIFICATION_RESEND_COOLDOWN_SECONDS', default=60, cast=int)
+
+# --- Email (kept for optional future use — e.g. admin notifications or a
+# password-reset-by-email flow — but no longer used by the registration
+# flow itself, since email is now optional and phone number is primary). ---
 EMAIL_BACKEND = config(
     'EMAIL_BACKEND',
     default='django.core.mail.backends.console.EmailBackend' if DEBUG else 'django.core.mail.backends.smtp.EmailBackend',
@@ -132,11 +143,6 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='no-reply@psychology-center.ir')
 
-# Email-verification code behaviour (accounts app)
-EMAIL_VERIFICATION_TTL_MINUTES = config('EMAIL_VERIFICATION_TTL_MINUTES', default=10, cast=int)
-EMAIL_VERIFICATION_MAX_ATTEMPTS = config('EMAIL_VERIFICATION_MAX_ATTEMPTS', default=5, cast=int)
-EMAIL_VERIFICATION_RESEND_COOLDOWN_SECONDS = config('EMAIL_VERIFICATION_RESEND_COOLDOWN_SECONDS', default=60, cast=int)
-
 # --- Production hardening (safe no-ops in DEBUG mode) -----------------------
 SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=not DEBUG, cast=bool)
 SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=not DEBUG, cast=bool)
@@ -145,7 +151,6 @@ SECURE_HSTS_SECONDS = config('SECURE_HSTS_SECONDS', default=0, cast=int)
 SECURE_HSTS_INCLUDE_SUBDOMAINS = SECURE_HSTS_SECONDS > 0
 SECURE_HSTS_PRELOAD = SECURE_HSTS_SECONDS > 0
 SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = 'DENY'
 
 
 
@@ -222,7 +227,8 @@ SESSION_COOKIE_NAME = 'psych_session_id'
 X_FRAME_OPTIONS = 'DENY'
 
 # فعال کردن XSS Filter در مرورگر
-SECURE_BROWSER_XSS_FILTER = True
+# (SECURE_BROWSER_XSS_FILTER حذف شده: این تنظیم در Django 4.0 برداشته شد، چون
+# مرورگرهای مدرن دیگر از X-XSS-Protection پشتیبانی نمی‌کنند.)
 
 # جلوگیری از MIME type sniffing
 SECURE_CONTENT_TYPE_NOSNIFF = True
@@ -250,7 +256,11 @@ RATELIMIT_ENABLE = True
 RATELIMIT_VIEW = 'accounts.views.ratelimited_error'
 
 # استفاده از cache برای شمارش درخواست‌ها
-# از cache حافظه (ساده‌ترین) استفاده می‌کنیم
+# ⚠️ توجه: LocMemCache حافظه‌ی هر پردازه (worker) را جدا نگه می‌دارد. اگر
+# gunicorn با چند worker اجرا شود (مثل این پروژه: --workers 3)، محدودیت‌های
+# rate-limit عملاً بین آن‌ها تقسیم/تکرار می‌شود (یک مهاجم می‌تواند تا ۳ برابر
+# سقف مجاز درخواست بزند). برای production یک cache مشترک مثل Redis یا
+# Memcached توصیه می‌شود.
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
@@ -258,6 +268,10 @@ CACHES = {
     }
 }
 # پشت پروکسی بودن (برای production با Nginx)
+# ⚠️ این تنظیم فقط وقتی امن است که پروکسی (nginx.conf) هدر X-Forwarded-For
+# را با IP واقعی overwrite کند، نه اینکه مقدار ارسالی از سمت کاربر را append
+# کند — وگرنه یک مهاجم می‌تواند با ست‌کردن این هدر در درخواست خودش، کل
+# rate-limit سایت را دور بزند.
 RATELIMIT_USE_X_FORWARDED_FOR = True
 # پیام خطای سفارشی وقتی rate limit زده شد
 RATELIMIT_ERROR_MESSAGE = 'تعداد درخواست‌های شما بیش از حد مجاز است. لطفاً چند دقیقه دیگر دوباره تلاش کنید.'

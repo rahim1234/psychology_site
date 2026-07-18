@@ -104,7 +104,7 @@ class ProfileAttachmentInline(admin.TabularInline):
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'user', 'age', 'gender', 'phq9_count', 'gad7_count', 'created_at')
     list_filter = ('gender',)
-    search_fields = ('full_name', 'user__email')
+    search_fields = ('full_name', 'user__phone_number')
     readonly_fields = ('created_at',)
     fields = ('user', 'full_name', 'age', 'gender', 'problem_description', 'created_at')
     change_form_template = 'admin/profiles/profile/change_form.html'

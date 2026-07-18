@@ -2,16 +2,16 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import ModelBackend
 
 
-class EmailBackend(ModelBackend):
-    """Authenticate using email + password instead of username + password."""
+class PhoneNumberBackend(ModelBackend):
+    """Authenticate using phone number + password instead of username + password."""
 
     def authenticate(self, request, username=None, password=None, **kwargs):
-        email = kwargs.get('email', username)
-        if not email or not password:
+        phone_number = kwargs.get('phone_number', username)
+        if not phone_number or not password:
             return None
         UserModel = get_user_model()
         try:
-            user = UserModel.objects.get(email__iexact=email)
+            user = UserModel.objects.get(phone_number=phone_number)
         except UserModel.DoesNotExist:
             # Run the hasher anyway to keep response timing similar whether
             # or not the account exists.

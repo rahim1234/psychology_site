@@ -64,13 +64,13 @@ class GAD7Inline(admin.TabularInline):
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
-    list_display = ('email', 'username', 'is_staff', 'is_active', 'has_profile')
+    list_display = ('phone_number', 'username', 'email', 'is_staff', 'is_active', 'has_profile')
     list_filter = ('is_staff', 'is_active')
-    search_fields = ('email', 'username')
-    ordering = ('email',)
+    search_fields = ('phone_number', 'username', 'email')
+    ordering = ('phone_number',)
     inlines = [ProfileInline, PHQ9Inline, GAD7Inline]
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
+        (None, {'fields': ('phone_number', 'email', 'password')}),
         ('اطلاعات شخصی', {'fields': ('username', 'first_name', 'last_name')}),
         ('دسترسی‌ها', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('تاریخ‌ها', {'fields': ('last_login', 'date_joined')}),
@@ -78,7 +78,7 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'username', 'password1', 'password2'),
+            'fields': ('phone_number', 'email', 'username', 'password1', 'password2'),
         }),
     )
 

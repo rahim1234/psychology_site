@@ -19,7 +19,7 @@ urlpatterns = [
     path('profile/', include('profiles.urls')),
     path('assessments/', include('assessments.urls')),
     path('blog/', include('blog.urls')),
-    path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('ckeditor/', include('core.ckeditor_urls')),
     path('captcha/', include('captcha.urls')),
     # robots.txt 
     path('robots.txt', TemplateView.as_view(

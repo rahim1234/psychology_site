@@ -1,25 +1,46 @@
 from django.conf import settings
 from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import RegexValidator
 from django.db import models
 from django.utils import timezone
 
+phone_number_validator = RegexValidator(
+    regex=r'^09\d{9}$',
+    message='شماره موبایل باید ۱۱ رقم باشد و با ۰۹ شروع شود (مثال: ۰۹۱۲۳۴۵۶۷۸۹).',
+)
+
 
 class User(AbstractUser):
-    email = models.EmailField('email address', unique=True)
+    phone_number = models.CharField(
+        'شماره موبایل',
+        max_length=11,
+        unique=True,
+        validators=[phone_number_validator],
+    )
+    # Email is now optional — phone number + SMS is the primary channel for
+    # signup/verification/login. Left blank/null so multiple users can
+    # leave it empty without violating a uniqueness constraint.
+    email = models.EmailField('آدرس ایمیل', blank=True, null=True)
+
+    # createsuperuser prompts for USERNAME_FIELD ('username') plus whatever
+    # is listed here. phone_number is required+unique, so it must be asked
+    # for explicitly — otherwise every superuser gets phone_number='' and
+    # the second one collides with the first on the unique constraint.
+    REQUIRED_FIELDS = ['phone_number']
 
     class Meta:
         verbose_name = 'کاربر'
         verbose_name_plural = 'کاربران'
 
 
-class EmailVerification(models.Model):
-    """Stores the (hashed) one-time code used to verify a user's email at signup."""
+class PhoneVerification(models.Model):
+    """Stores the (hashed) one-time code used to verify a user's phone number at signup."""
 
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='email_verification',
+        related_name='phone_verification',
     )
     code_hash = models.CharField(max_length=128)
     attempts = models.PositiveSmallIntegerField(default=0)
@@ -28,8 +49,8 @@ class EmailVerification(models.Model):
     expires_at = models.DateTimeField()
 
     class Meta:
-        verbose_name = 'تایید ایمیل'
-        verbose_name_plural = 'تاییدهای ایمیل'
+        verbose_name = 'تایید شماره موبایل'
+        verbose_name_plural = 'تاییدهای شماره موبایل'
 
     def set_code(self, raw_code: str, ttl_minutes: int) -> None:
         self.code_hash = make_password(raw_code)
@@ -49,4 +70,4 @@ class EmailVerification(models.Model):
         return max(0, int(remaining))
 
     def __str__(self):
-        return f'کد تایید {self.user.email}'
+        return f'کد تایید {self.user.phone_number}'

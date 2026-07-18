@@ -28,7 +28,7 @@ class Profile(models.Model):
         verbose_name_plural = 'پروفایل‌ها'
 
     def __str__(self):
-        return f'{self.full_name} - {self.user.email}'
+        return f'{self.full_name} - {self.user.phone_number}'
 
 
 class SessionNote(models.Model):

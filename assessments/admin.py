@@ -10,7 +10,7 @@ from .models import (
 class PHQ9ResultAdmin(admin.ModelAdmin):
     list_display = ('user', 'score', 'severity', 'answers_summary', 'created_at')
     list_filter = ('severity', 'created_at')
-    search_fields = ('user__email', 'user__username')
+    search_fields = ('user__phone_number', 'user__username')
     readonly_fields = ('created_at', 'answers_formatted')
     fields = ('user', 'score', 'severity', 'answers_formatted', 'created_at')
 
@@ -47,7 +47,7 @@ class PHQ9ResultAdmin(admin.ModelAdmin):
 class GAD7ResultAdmin(admin.ModelAdmin):
     list_display = ('user', 'score', 'severity', 'answers_summary', 'created_at')
     list_filter = ('severity', 'created_at')
-    search_fields = ('user__email', 'user__username')
+    search_fields = ('user__phone_number', 'user__username')
     readonly_fields = ('created_at', 'answers_formatted')
     fields = ('user', 'score', 'severity', 'answers_formatted', 'created_at')
 
@@ -82,7 +82,7 @@ class GAD7ResultAdmin(admin.ModelAdmin):
 class BDIResultAdmin(admin.ModelAdmin):
     list_display = ('user', 'score', 'severity', 'created_at')
     list_filter = ('severity', 'created_at')
-    search_fields = ('user__email', 'user__username')
+    search_fields = ('user__phone_number', 'user__username')
     readonly_fields = ('created_at',)
 
 
@@ -90,7 +90,7 @@ class BDIResultAdmin(admin.ModelAdmin):
 class BAIResultAdmin(admin.ModelAdmin):
     list_display = ('user', 'score', 'severity', 'created_at')
     list_filter = ('severity', 'created_at')
-    search_fields = ('user__email', 'user__username')
+    search_fields = ('user__phone_number', 'user__username')
     readonly_fields = ('created_at',)
 
 
@@ -98,5 +98,5 @@ class BAIResultAdmin(admin.ModelAdmin):
 class MCMI4ResultAdmin(admin.ModelAdmin):
     list_display = ('user', 'score', 'created_at')
     list_filter = ('created_at',)
-    search_fields = ('user__email', 'user__username')
+    search_fields = ('user__phone_number', 'user__username')
     readonly_fields = ('created_at',)

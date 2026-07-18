@@ -22,7 +22,7 @@ class PHQ9Result(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f'{self.user.email} - PHQ-9: {self.score} ({self.get_severity_display()})'
+        return f'{self.user.phone_number} - PHQ-9: {self.score} ({self.get_severity_display()})'
 
 
 class GAD7Result(models.Model):
@@ -44,7 +44,7 @@ class GAD7Result(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f'{self.user.email} - GAD-7: {self.score} ({self.get_severity_display()})'
+        return f'{self.user.phone_number} - GAD-7: {self.score} ({self.get_severity_display()})'
 
 
 class BDIResult(models.Model):
@@ -67,7 +67,7 @@ class BDIResult(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f'{self.user.email} - BDI: {self.score} ({self.get_severity_display()})'
+        return f'{self.user.phone_number} - BDI: {self.score} ({self.get_severity_display()})'
 
 
 class BAIResult(models.Model):
@@ -90,7 +90,7 @@ class BAIResult(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f'{self.user.email} - BAI: {self.score} ({self.get_severity_display()})'
+        return f'{self.user.phone_number} - BAI: {self.score} ({self.get_severity_display()})'
 
 
 class MCMI4Result(models.Model):
@@ -106,4 +106,4 @@ class MCMI4Result(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f'{self.user.email} - MCMI-4: {self.score}'
+        return f'{self.user.phone_number} - MCMI-4: {self.score}'
