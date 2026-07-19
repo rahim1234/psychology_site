@@ -1,81 +1,506 @@
-/* Custom styles for Psychology Website */
+/* =============================================================
+   [نام شما] — سیستم طراحی نسخه‌ی ۲
+   الهام‌گرفته از حس‌وحال سایت‌های روان‌شناسیِ آرام و ادیتوریال:
+   نور گرم، فضای خالی زیاد، تایپوگرافی ساکت، بدون آیکون‌های درشت.
+   ============================================================= */
+
+:root {
+    /* پالت */
+    --paper: #F5F2EA;
+    --paper-2: #ECE7D8;
+    --surface: #FFFFFF;
+    --ink: #262420;
+    --ink-soft: #6B6459;
+    --ink-faint: #948C7E;
+    --line: #E2DCC9;
+
+    --pine: #2F5D50;
+    --pine-dark: #1C3E34;
+    --pine-light: #7C9C90;
+    --ochre: #A9793A;
+    --ochre-dark: #86601E;
+    --sage: #E4E9DB;
+    --brick: #9C4A34;
+
+    /* سازگاری با صفحاتی که مستقیم ویرایش نشده‌اند */
+    --primary-color: var(--pine);
+    --secondary-color: var(--pine-light);
+    --accent-color: var(--ochre);
+    --dark-color: var(--ink);
+    --light-bg: var(--paper-2);
+    --text-color: var(--ink-soft);
+
+    --font-main: 'Vazirmatn', Tahoma, sans-serif;
+
+    --radius-sm: 10px;
+    --radius-md: 18px;
+    --radius-lg: 28px;
+
+    --shadow-sm: 0 2px 14px rgba(38, 36, 32, 0.05);
+    --shadow-md: 0 14px 36px rgba(38, 36, 32, 0.09);
+    --shadow-lg: 0 24px 60px rgba(38, 36, 32, 0.16);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+html { scroll-behavior: smooth; }
+* { font-family: var(--font-main); }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    direction: rtl;
+    background-color: var(--paper);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.85;
+    font-weight: 400;
 }
 
-.hero-section {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 80px 0;
+main { flex: 1; }
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--ink);
+    font-weight: 700;
+    letter-spacing: -0.01em;
 }
 
-.feature-card {
-    transition: transform 0.3s;
-    border: none;
-    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+p { color: var(--ink-soft); }
+
+a { color: var(--pine); }
+a:hover { color: var(--pine-dark); }
+
+::selection { background: var(--sage); color: var(--pine-dark); }
+
+a:focus-visible, button:focus-visible, input:focus-visible,
+textarea:focus-visible, select:focus-visible, .btn:focus-visible {
+    outline: 3px solid var(--ochre);
+    outline-offset: 2px;
 }
 
-.feature-card:hover {
-    transform: translateY(-5px);
+/* آیکون‌ها همیشه کوچک و ساکت — هیچ آیکونِ درشتِ تزئینی */
+.bi { font-size: 1em; vertical-align: -0.1em; }
+
+/* -------------------------------------------------------------
+   برچسبِ کوچکِ eyebrow — خط نازک + متن ریز، نه رنگ پررنگ
+   ------------------------------------------------------------- */
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--ink-faint);
+    margin-bottom: 14px;
+}
+.eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 26px;
+    height: 1.5px;
+    background: var(--ochre);
 }
 
-.card {
-    border-radius: 10px;
-}
-
+/* -------------------------------------------------------------
+   دکمه‌ها — کوچک‌تر، ساکت‌تر
+   ------------------------------------------------------------- */
 .btn {
-    border-radius: 8px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.94rem;
+    padding: 0.6rem 1.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    border-width: 1.5px;
 }
+.btn-lg { padding: 0.75rem 1.9rem; font-size: 1rem; }
+.btn-sm { padding: 0.4rem 1.1rem; font-size: 0.85rem; }
 
-footer {
-    background-color: #343a40;
-    color: white;
-    padding: 20px 0;
-    margin-top: 40px;
+.btn-primary { background: var(--pine); border-color: var(--pine); color: #fff; }
+.btn-primary:hover, .btn-primary:focus {
+    background: var(--pine-dark); border-color: var(--pine-dark); color: #fff;
+    transform: translateY(-1px); box-shadow: var(--shadow-sm);
 }
+.btn-success { background: var(--pine); border-color: var(--pine); }
+.btn-success:hover { background: var(--pine-dark); border-color: var(--pine-dark); }
 
-/* Form styling */
+.btn-outline-primary { border-color: var(--line); color: var(--ink); background: transparent; }
+.btn-outline-primary:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+.btn-warning, .btn-accent { background: var(--ochre); border-color: var(--ochre); color: #fff; }
+.btn-warning:hover, .btn-accent:hover { background: var(--ochre-dark); border-color: var(--ochre-dark); color: #fff; }
+
+.btn-link { color: var(--pine); font-weight: 500; }
+
+/* -------------------------------------------------------------
+   فرم‌ها
+   ------------------------------------------------------------- */
+.form-label { font-weight: 600; color: var(--ink); margin-bottom: 6px; font-size: 0.92rem; }
+
 .form-control, .form-select {
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--line);
+    padding: 0.6rem 0.9rem;
+    background-color: var(--surface);
+    color: var(--ink);
+    font-size: 0.95rem;
+}
+.form-control:focus, .form-select:focus {
+    border-color: var(--pine);
+    box-shadow: 0 0 0 0.18rem rgba(47, 93, 80, 0.14);
 }
 
-/* Radio button styling for tests */
 .form-check {
-    margin-bottom: 8px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    transition: background-color 0.2s;
+    margin-bottom: 6px;
+    padding: 9px 14px;
+    border-radius: var(--radius-sm);
+    transition: background-color 0.2s ease;
+}
+.form-check:hover { background-color: var(--sage); }
+.form-check-input:checked { background-color: var(--pine); border-color: var(--pine); }
+.form-check-input:checked + .form-check-label { font-weight: 600; color: var(--pine-dark); }
+
+.text-danger { color: var(--brick) !important; }
+
+/* -------------------------------------------------------------
+   کارت‌ها / هشدارها / جدول‌ها
+   ------------------------------------------------------------- */
+.card { border-radius: var(--radius-md); border: 1px solid var(--line); background-color: var(--surface); box-shadow: var(--shadow-sm); }
+.card-header { background: var(--pine); color: #fff; border-bottom: none; border-radius: var(--radius-md) var(--radius-md) 0 0 !important; }
+.card-header.bg-primary { background: var(--pine) !important; }
+
+.alert { border-radius: var(--radius-sm); border: none; border-right: 3px solid transparent; font-size: 0.92rem; }
+.alert-success { background: #E7EEE8; color: var(--pine-dark); border-right-color: var(--pine); }
+.alert-danger  { background: #F1E4DF; color: var(--brick); border-right-color: var(--brick); }
+.alert-warning { background: #F5EEDC; color: var(--ochre-dark); border-right-color: var(--ochre); }
+.alert-info    { background: #E9EEED; color: var(--pine-dark); border-right-color: var(--pine-light); }
+
+.table { border-radius: var(--radius-sm); overflow: hidden; font-size: 0.92rem; }
+.table thead { background: var(--paper-2); }
+
+.display-3 { font-size: 3.2rem; font-weight: 700; }
+
+/* -------------------------------------------------------------
+   ناوبری — کوچک، ساکت
+   ------------------------------------------------------------- */
+.navbar {
+    background: rgba(245, 242, 234, 0.9) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 0 var(--line);
+    padding: 18px 0;
+    transition: padding 0.25s ease, box-shadow 0.25s ease;
+}
+.navbar.scrolled { padding: 11px 0; box-shadow: var(--shadow-sm); }
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--ink) !important;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    letter-spacing: -0.01em;
+}
+.navbar-brand .brand-mark {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--ochre);
+    flex-shrink: 0;
 }
 
-.form-check:hover {
-    background-color: #f8f9fa;
+.nav-link {
+    font-weight: 500;
+    font-size: 0.92rem;
+    color: var(--ink-soft) !important;
+    margin: 0 2px;
+    padding: 8px 14px !important;
+    border-radius: 999px;
+    transition: all 0.2s ease;
+}
+.nav-link:hover { color: var(--ink) !important; background: var(--sage); }
+
+.btn-nav { padding: 7px 18px !important; border-radius: 999px; font-weight: 600; font-size: 0.9rem; }
+
+/* -------------------------------------------------------------
+   فوتر
+   ------------------------------------------------------------- */
+footer { background: var(--ink); color: #C7C2B4; padding: 64px 0 24px; margin-top: 100px; font-size: 0.9rem; }
+footer h5 { color: #fff; font-weight: 600; margin-bottom: 16px; font-size: 0.95rem; }
+footer a { color: #ACA595; text-decoration: none; transition: color 0.2s ease; }
+footer a:hover { color: #fff; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; margin-top: 30px; text-align: center; color: #7D7768; font-size: 0.82rem; }
+
+.social-icons a {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 34px; height: 34px; background: rgba(255,255,255,0.07);
+    border-radius: 50%; margin-inline-end: 6px; color: #fff; font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+.social-icons a:hover { background: var(--ochre); }
+
+/* -------------------------------------------------------------
+   پنل‌های عکاسی‌گونه (بدون عکس واقعی) — گرادیان + دانه‌ی نرم
+   جای مناسب برای جایگزینی بعدی با عکس واقعی از مطب/کلینیک
+   ------------------------------------------------------------- */
+.photo-panel {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background:
+        radial-gradient(ellipse at 28% 18%, rgba(255, 214, 158, 0.28), transparent 55%),
+        radial-gradient(ellipse at 75% 85%, rgba(124, 156, 144, 0.35), transparent 60%),
+        linear-gradient(155deg, #2E2721 0%, #4B3D31 45%, #2F5D50 100%);
+}
+.photo-panel::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.10;
+    mix-blend-mode: overlay;
+}
+.photo-panel::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.28) 100%);
+}
+.photo-panel-caption {
+    position: absolute;
+    bottom: 20px;
+    inset-inline-start: 20px;
+    z-index: 2;
+    color: #F0EBDD;
+    font-size: 0.78rem;
+    font-weight: 500;
+    opacity: 0.85;
+}
+.photo-panel-caption i { margin-inline-end: 4px; }
+
+.photo-panel.tone-light {
+    background:
+        radial-gradient(ellipse at 30% 20%, rgba(124, 156, 144, 0.30), transparent 55%),
+        linear-gradient(155deg, #E4E9DB 0%, #C9D3C4 60%, #7C9C90 100%);
+}
+.photo-panel.tone-light .photo-panel-caption { color: var(--pine-dark); opacity: 0.7; }
+.photo-panel.tone-light::after { background: radial-gradient(ellipse at center, transparent 50%, rgba(30,50,45,0.14) 100%); }
+
+/* -------------------------------------------------------------
+   هیرو
+   ------------------------------------------------------------- */
+.hero { padding: 56px 0 80px; }
+
+.hero-title {
+    font-size: clamp(1.7rem, 3.1vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 20px;
+    max-width: 16ch;
+}
+.hero-title .accent { color: var(--pine); }
+
+.hero-lead {
+    font-size: 1.02rem;
+    color: var(--ink-soft);
+    line-height: 1.9;
+    max-width: 44ch;
+    margin-bottom: 30px;
 }
 
-.form-check-input:checked + .form-check-label {
-    font-weight: bold;
-    color: #0d6efd;
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+.hero-visual { position: relative; }
+.hero-visual .photo-panel { height: 100%; min-height: 380px; }
+
+/* -------------------------------------------------------------
+   بخش‌ها
+   ------------------------------------------------------------- */
+.section { padding: 84px 0; }
+.section-alt { background: var(--paper-2); }
+.section-narrow { max-width: 760px; margin: 0 auto; text-align: center; }
+
+.section-heading { margin-bottom: 48px; }
+.section-heading h2 { font-size: clamp(1.3rem, 2vw, 1.7rem); margin-bottom: 10px; }
+.section-heading p { color: var(--ink-soft); font-size: 0.98rem; max-width: 56ch; }
+.section-heading.text-center p { margin-inline: auto; }
+
+/* -------------------------------------------------------------
+   مانیفست / نقل‌قول
+   ------------------------------------------------------------- */
+.manifesto {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+}
+.manifesto blockquote {
+    font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.75;
+    margin: 0 0 18px;
+}
+.manifesto cite {
+    font-style: normal;
+    color: var(--ink-faint);
+    font-size: 0.85rem;
 }
 
-/* Result cards */
-.display-3 {
-    font-size: 4rem;
-    font-weight: bold;
+/* -------------------------------------------------------------
+   کارت‌های آزمون — تخت‌تر، بدون آیکونِ درشت
+   ------------------------------------------------------------- */
+.test-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 26px 24px;
+    height: 100%;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.test-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--pine-light); }
+.test-card .test-tag { display: block; font-size: 0.74rem; font-weight: 600; color: var(--ink-faint); margin-bottom: 8px; }
+.test-card h3 { font-size: 1.02rem; margin-bottom: 8px; font-weight: 700; }
+.test-card p { color: var(--ink-soft); font-size: 0.9rem; margin-bottom: 18px; line-height: 1.75; }
+
+/* -------------------------------------------------------------
+   روند مرحله‌ای
+   ------------------------------------------------------------- */
+.process-step { display: flex; gap: 16px; align-items: flex-start; }
+.process-num {
+    flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%;
+    border: 1.5px solid var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 0.85rem; color: var(--ink);
+}
+.process-step h4 { font-size: 0.98rem; margin-bottom: 5px; font-weight: 700; }
+.process-step p { color: var(--ink-soft); margin: 0; font-size: 0.9rem; }
+
+/* -------------------------------------------------------------
+   دو مسیر شروع («از همین‌جا شروع کنید»)
+   ------------------------------------------------------------- */
+.path-card {
+    display: block;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 28px 26px;
+    height: 100%;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+.path-card:hover { border-color: var(--pine); box-shadow: var(--shadow-md); transform: translateY(-3px); }
+.path-card .eyebrow { margin-bottom: 10px; }
+.path-card h3 { color: var(--ink); font-size: 1.08rem; margin-bottom: 8px; }
+.path-card p { color: var(--ink-soft); font-size: 0.9rem; margin-bottom: 0; }
+.path-card .path-arrow { color: var(--pine); font-weight: 600; font-size: 0.88rem; margin-top: 14px; display: inline-block; }
+
+/* -------------------------------------------------------------
+   درباره‌ی من
+   ------------------------------------------------------------- */
+.credential-list { list-style: none; padding: 0; margin: 20px 0 0; }
+.credential-list li {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 12px 0; border-bottom: 1px solid var(--line); color: var(--ink-soft); font-size: 0.94rem;
+}
+.credential-list li:last-child { border-bottom: none; }
+.credential-list li i { color: var(--pine); margin-top: 3px; font-size: 0.85rem; }
+
+/* -------------------------------------------------------------
+   کارت‌های وبلاگ
+   ------------------------------------------------------------- */
+.blog-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); overflow: hidden; height: 100%; transition: all 0.25s ease; }
+.blog-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.blog-card-thumb { height: 130px; }
+.blog-card-thumb.photo-panel::after { background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.22) 100%); }
+.blog-card-body { padding: 20px; }
+.blog-card-body h3 { font-size: 1rem; margin-bottom: 8px; font-weight: 700; }
+.blog-card-body p { color: var(--ink-soft); font-size: 0.88rem; }
+
+/* -------------------------------------------------------------
+   نوار CTA
+   ------------------------------------------------------------- */
+.cta-band { background: var(--pine); color: #fff; border-radius: var(--radius-lg); padding: 52px 40px; text-align: center; }
+.cta-band h2 { color: #fff; font-size: clamp(1.25rem, 2.2vw, 1.7rem); margin-bottom: 12px; font-weight: 700; }
+.cta-band p { color: #D6E2DB; margin-bottom: 22px; font-size: 0.98rem; }
+.cta-band .btn-accent { background: var(--ochre); border-color: var(--ochre); }
+
+/* -------------------------------------------------------------
+   ورود / ثبت‌نام
+   ------------------------------------------------------------- */
+.auth-shell {
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 520px; border-radius: var(--radius-lg); overflow: hidden;
+    box-shadow: var(--shadow-lg); border: 1px solid var(--line); margin: 48px 0;
+}
+.auth-brand-panel.photo-panel { padding: 44px 38px; display: flex; flex-direction: column; justify-content: center; }
+.auth-brand-panel h2 { color: #fff; font-size: 1.3rem; margin-bottom: 12px; font-weight: 700; position: relative; z-index: 1; }
+.auth-brand-panel p { color: #E4E0D2; line-height: 1.85; position: relative; z-index: 1; font-size: 0.92rem; }
+
+.auth-form-panel { background: var(--surface); padding: 44px 42px; display: flex; flex-direction: column; justify-content: center; }
+.auth-form-panel h1 { font-size: 1.3rem; margin-bottom: 6px; font-weight: 700; }
+.auth-form-panel .auth-subtitle { color: var(--ink-soft); margin-bottom: 26px; font-size: 0.9rem; }
+
+@media (max-width: 900px) {
+    .auth-shell { grid-template-columns: 1fr; }
+    .auth-brand-panel { padding: 32px 28px; min-height: 160px; }
+    .auth-form-panel { padding: 32px 28px; }
 }
 
-/* Table styling */
-.table {
-    border-radius: 8px;
+/* -------------------------------------------------------------
+   واکنش‌گرا
+   ------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .section { padding: 56px 0; }
+    .hero { padding: 40px 0 56px; }
+    .cta-band { padding: 38px 22px; }
+    footer { padding: 44px 0 20px; margin-top: 64px; }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up { animation: fadeInUp 0.6s ease-out both; }
+
+/* -------------------------------------------------------------
+   کاروسل عکس‌های هیرو (فضای مطب) — محو نرم هر ۵ ثانیه
+   ------------------------------------------------------------- */
+.hero-carousel {
+    position: relative;
+    height: 100%;
+    min-height: 380px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
 }
-
-.table thead {
-    border-radius: 8px;
+.hero-carousel .photo-panel {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    min-height: 0;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+    border-radius: var(--radius-lg);
+}
+.hero-carousel .photo-panel.is-active { opacity: 1; z-index: 1; }
+.hero-carousel .photo-panel img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
 }
 
-/* Logout button rendered as a form (POST) but styled like a nav link */
-.navbar-nav .btn-link.nav-link {
-    padding: 0.5rem 1rem;
-    text-decoration: none;
+.photo-panel.tone-warm {
+    background:
+        radial-gradient(ellipse at 30% 25%, rgba(169, 121, 58, 0.30), transparent 55%),
+        linear-gradient(155deg, #4B3D31 0%, #7C6248 50%, #A9793A 100%);
 }
+.photo-panel.tone-warm .photo-panel-caption { color: #F5EFE2; }
+
+.photo-panel.tone-deep {
+    background:
+        radial-gradient(ellipse at 70% 30%, rgba(47, 93, 80, 0.35), transparent 55%),
+        linear-gradient(155deg, #1C3E34 0%, #2F5D50 55%, #7C9C90 100%);
+}
+.photo-panel.tone-deep .photo-panel-caption { color: #EAF1EC; }

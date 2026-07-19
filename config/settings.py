@@ -255,24 +255,73 @@ RATELIMIT_ENABLE = True
 # روش بررسی: بر اساس IP (مناسب برای جلوگیری از حملات)
 RATELIMIT_VIEW = 'accounts.views.ratelimited_error'
 
-# استفاده از cache برای شمارش درخواست‌ها
-# ⚠️ توجه: LocMemCache حافظه‌ی هر پردازه (worker) را جدا نگه می‌دارد. اگر
-# gunicorn با چند worker اجرا شود (مثل این پروژه: --workers 3)، محدودیت‌های
-# rate-limit عملاً بین آن‌ها تقسیم/تکرار می‌شود (یک مهاجم می‌تواند تا ۳ برابر
-# سقف مجاز درخواست بزند). برای production یک cache مشترک مثل Redis یا
-# Memcached توصیه می‌شود.
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'ratelimit-cache',
+# استفاده از cache برای شمارش درخواست‌ها (rate limiting)
+#
+# ⚠️ چرا Redis؟ LocMemCache حافظه‌ی هر پردازه (worker) را جدا نگه می‌دارد. اگر
+# gunicorn با چند worker اجرا شود (مثل این پروژه: --workers 3)، هر worker
+# شمارنده‌ی خودش را دارد و آن را با بقیه‌ی workerها به اشتراک نمی‌گذارد. یعنی
+# اگر درخواست‌های یک مهاجم بین ۳ worker پخش شود، هر worker فکر می‌کند هنوز به
+# سقف نرسیده، و در عمل مهاجم می‌تواند تا ۳ برابر سقف مجاز درخواست بزند.
+#
+# راه‌حل: یک cache مشترک و خارج از پردازه (Redis) که همه‌ی workerها به آن وصل
+# می‌شوند و یک شمارنده‌ی واحد می‌بینند. اگر REDIS_URL در .env تنظیم شده باشد
+# از آن استفاده می‌شود؛ در غیر این صورت (مثلاً در توسعه‌ی لوکال) به
+# LocMemCache برمی‌گردیم، اما در production حتماً باید REDIS_URL تنظیم شود.
+REDIS_URL = config('REDIS_URL', default='')
+
+if REDIS_URL:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django_redis.cache.RedisCache',
+            'LOCATION': REDIS_URL,
+            'OPTIONS': {
+                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            },
+        }
     }
-}
+else:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'LOCATION': 'ratelimit-cache',
+        }
+    }
+    if not DEBUG:
+        import warnings
+        warnings.warn(
+            'REDIS_URL تنظیم نشده است؛ rate limiting موقتاً روی LocMemCache '
+            '(حافظه‌ی داخل پردازه) اجرا می‌شود که بین workerهای gunicorn مشترک '
+            'نیست. برای production حتماً یک سرور Redis راه‌اندازی کرده و '
+            'REDIS_URL را در .env تنظیم کنید.',
+            RuntimeWarning,
+        )
 # پشت پروکسی بودن (برای production با Nginx)
 # ⚠️ این تنظیم فقط وقتی امن است که پروکسی (nginx.conf) هدر X-Forwarded-For
 # را با IP واقعی overwrite کند، نه اینکه مقدار ارسالی از سمت کاربر را append
 # کند — وگرنه یک مهاجم می‌تواند با ست‌کردن این هدر در درخواست خودش، کل
 # rate-limit سایت را دور بزند.
-RATELIMIT_USE_X_FORWARDED_FOR = True
+RATELIMIT_USE_X_FORWARDED_FOR = True  # نگه‌داشته شده برای سازگاری با نسخه‌های قدیمی‌تر django-ratelimit
+
+
+def _ratelimit_client_ip(request):
+    """IP واقعی کاربر پشت nginx.
+
+    نسخه‌های جدید django-ratelimit دیگر RATELIMIT_USE_X_FORWARDED_FOR را
+    نمی‌خوانند و مستقیم REMOTE_ADDR را می‌خواهند، که وقتی gunicorn روی یک
+    Unix socket بایند شده (نه TCP)، همیشه خالی است. nginx.conf مقدار
+    X-Real-IP و X-Forwarded-For را با IP واقعی کاربر overwrite می‌کند
+    (نه append)، پس این‌ها قابل جعل توسط کاربر نیستند.
+    """
+    real_ip = request.META.get('HTTP_X_REAL_IP')
+    if real_ip:
+        return real_ip
+    forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if forwarded_for:
+        return forwarded_for.split(',')[0].strip()
+    return request.META.get('REMOTE_ADDR', '')
+
+
+RATELIMIT_IP_META_KEY = _ratelimit_client_ip
 # پیام خطای سفارشی وقتی rate limit زده شد
 RATELIMIT_ERROR_MESSAGE = 'تعداد درخواست‌های شما بیش از حد مجاز است. لطفاً چند دقیقه دیگر دوباره تلاش کنید.'
 

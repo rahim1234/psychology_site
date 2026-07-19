@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}">
     
     <!-- فونت وزیرمتن از CDN -->
-    <link rel="stylesheet" href="{% static 'vendor/vazirmatn/Vazirmatn-font-face.css' %}">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     
     <!-- استایل سفارشی شما -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -254,6 +254,11 @@
                                 <li><a class="dropdown-item" href="{% url 'dashboard' %}">
                                     <i class="bi bi-speedometer2 me-2"></i>داشبورد
                                 </a></li>
+                                {% if user.is_superuser %}
+                                <li><a class="dropdown-item" href="{% url 'manage_content' %}">
+                                    <i class="bi bi-pencil-square me-2"></i>مدیریت محتوای سایت
+                                </a></li>
+                                {% endif %}
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form method="post" action="{% url 'logout' %}" class="d-inline">
@@ -292,15 +297,15 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6">
-                    <h5><i class="bi bi-heart-pulse me-2"></i>مرکز مشاوره</h5>
+                    <h5><i class="bi bi-heart-pulse me-2"></i>{{ site_content.footer_brand_title }}</h5>
                     <p class="text-muted">
-                        ارائه خدمات ارزیابی و مشاوره روانشناختی با هدف ارتقای سلامت روان جامعه.
+                        {{ site_content.footer_brand_text|linebreaksbr }}
                     </p>
                     <div class="social-icons mt-3">
-                        <a href="#"><i class="bi bi-instagram"></i></a>
-                        <a href="#"><i class="bi bi-telegram"></i></a>
-                        <a href="#"><i class="bi bi-whatsapp"></i></a>
-                        <a href="#"><i class="bi bi-twitter"></i></a>
+                        {% if site_content.social_instagram_url %}<a href="{{ site_content.social_instagram_url }}"><i class="bi bi-instagram"></i></a>{% endif %}
+                        {% if site_content.social_telegram_url %}<a href="{{ site_content.social_telegram_url }}"><i class="bi bi-telegram"></i></a>{% endif %}
+                        {% if site_content.social_whatsapp_url %}<a href="{{ site_content.social_whatsapp_url }}"><i class="bi bi-whatsapp"></i></a>{% endif %}
+                        {% if site_content.social_twitter_url %}<a href="{{ site_content.social_twitter_url }}"><i class="bi bi-twitter"></i></a>{% endif %}
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6">
@@ -315,23 +320,22 @@
                 <div class="col-lg-3 col-md-6">
                     <h5>خدمات ما</h5>
                     <ul class="list-unstyled">
-                        <li><i class="bi bi-check-circle me-2"></i>آزمون افسردگی PHQ-9</li>
-                        <li><i class="bi bi-check-circle me-2"></i>آزمون اضطراب GAD-7</li>
-                        <li><i class="bi bi-check-circle me-2"></i>مشاوره آنلاین</li>
-                        <li><i class="bi bi-check-circle me-2"></i>پیگیری پیشرفت</li>
+                        {% for service_line in site_content.footer_services.splitlines %}
+                        <li><i class="bi bi-check-circle me-2"></i>{{ service_line }}</li>
+                        {% endfor %}
                     </ul>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h5>تماس با ما</h5>
                     <ul class="list-unstyled">
-                        <li><i class="bi bi-envelope me-2"></i>info@psychology-center.ir</li>
-                        <li><i class="bi bi-telephone me-2"></i>۰۲۱-۱۲۳۴۵۶۷۸</li>
-                        <li><i class="bi bi-geo-alt me-2"></i>تهران، ولیعصر</li>
+                        <li><i class="bi bi-envelope me-2"></i>{{ site_content.contact_email }}</li>
+                        <li><i class="bi bi-telephone me-2"></i>{{ site_content.contact_phone }}</li>
+                        <li><i class="bi bi-geo-alt me-2"></i>{{ site_content.contact_address }}</li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p class="mb-0">© ۲۰۲۶ مرکز مشاوره روانشناسی. تمامی حقوق محفوظ است.</p>
+                <p class="mb-0">{{ site_content.footer_copyright }}</p>
             </div>
         </div>
     </footer>
@@ -350,7 +354,7 @@
             }
         });
     </script>
-    
+
     {% block extra_js %}{% endblock %}
 </body>
 </html>

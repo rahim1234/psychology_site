@@ -1,45 +1,44 @@
 {% extends "core/base.html" %}
 
-{% block title %}ثبت نام{% endblock %}
+{% block title %}ثبت‌نام | [نام شما]{% endblock %}
 
 {% block content %}
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card mt-5">
-                <div class="card-header">
-                    <h4 class="text-center">ثبت نام</h4>
-                </div>
-                <div class="card-body">
-                    <form method="post">
-                        {% csrf_token %}
-                        
-                        {# 🍯 Honeypot - رندر جداگانه بدون label و wrapper #}
-                        {{ form.website_url }}
-                        
-                        {# بقیه فیلدها (به جز honeypot) #}
-                        {% for field in form %}
-                            {% if field.name != 'website_url' %}
-                                <div class="mb-3">
-                                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                                    {{ field }}
-                                    {% if field.help_text %}
-                                        <small class="form-text text-muted">{{ field.help_text|safe }}</small>
-                                    {% endif %}
-                                    {% if field.errors %}
-                                        <div class="text-danger small">{{ field.errors }}</div>
-                                    {% endif %}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                        
-                        <button type="submit" class="btn btn-success w-100">ثبت نام</button>
-                    </form>
+    <div class="auth-shell">
+        <div class="auth-brand-panel photo-panel d-none d-md-flex">
+            <h2>یک قدم آرام برای شروع</h2>
+            <p>ثبت‌نام رایگان است، فقط با شماره موبایل‌تان، و کمتر از یک دقیقه طول می‌کشد.</p>
+        </div>
+        <div class="auth-form-panel">
+            <h1>ثبت‌نام</h1>
+            <p class="auth-subtitle">برای دسترسی به آزمون‌های خودسنجی، حساب بسازید.</p>
 
-                    <div class="text-center mt-3">
-                        <p>قبلاً ثبت نام کرده‌اید؟ <a href="{% url 'login' %}">ورود کنید</a></p>
-                    </div>
-                </div>
+            <form method="post">
+                {% csrf_token %}
+
+                {# 🍯 Honeypot - رندر جداگانه بدون label و wrapper #}
+                {{ form.website_url }}
+
+                {% for field in form %}
+                    {% if field.name != 'website_url' %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text|safe }}</small>
+                            {% endif %}
+                            {% if field.errors %}
+                                <div class="text-danger small">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                <button type="submit" class="btn btn-success w-100">ثبت نام</button>
+            </form>
+
+            <div class="text-center mt-3">
+                <p class="mb-0">قبلاً ثبت نام کرده‌اید؟ <a href="{% url 'login' %}">ورود کنید</a></p>
             </div>
         </div>
     </div>

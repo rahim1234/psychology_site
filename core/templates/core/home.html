@@ -1,491 +1,256 @@
 {% extends "core/base.html" %}
+{% load static %}
 
-{% block title %}صفحه اصلی | مرکز مشاوره روانشناسی{% endblock %}
-
-{% block extra_css %}
-<style>
-    /* === Hero Section === */
-    .hero-section {
-        background: linear-gradient(135deg, #4a90a4 0%, #7bc4c4 100%);
-        color: white;
-        padding: 100px 0 120px;
-        position: relative;
-        overflow: hidden;
-        margin-top: -40px;
-    }
-    
-    .hero-section::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 100%;
-        height: 100%;
-        background-image: 
-            radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
-            radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
-        pointer-events: none;
-    }
-    
-    .hero-content {
-        position: relative;
-        z-index: 2;
-    }
-    
-    .hero-title {
-        font-size: 3rem;
-        font-weight: 800;
-        margin-bottom: 20px;
-        line-height: 1.3;
-    }
-    
-    .hero-subtitle {
-        font-size: 1.3rem;
-        margin-bottom: 35px;
-        opacity: 0.95;
-        line-height: 1.8;
-    }
-    
-    .hero-buttons .btn {
-        padding: 12px 32px;
-        font-size: 1.05rem;
-        font-weight: 600;
-        border-radius: 10px;
-        margin: 5px;
-    }
-    
-    .btn-hero-primary {
-        background: white;
-        color: var(--primary-color);
-        border: none;
-    }
-    
-    .btn-hero-primary:hover {
-        background: #f8f9fa;
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    }
-    
-    .btn-hero-outline {
-        background: transparent;
-        color: white;
-        border: 2px solid white;
-    }
-    
-    .btn-hero-outline:hover {
-        background: white;
-        color: var(--primary-color);
-    }
-    
-    .hero-image {
-        position: relative;
-        z-index: 2;
-        text-align: center;
-    }
-    
-    .hero-image i {
-        font-size: 12rem;
-        opacity: 0.3;
-    }
-    
-    /* === Services Section === */
-    .section-title {
-        text-align: center;
-        margin-bottom: 60px;
-    }
-    
-    .section-title h2 {
-        font-size: 2.2rem;
-        font-weight: 700;
-        color: var(--dark-color);
-        margin-bottom: 15px;
-    }
-    
-    .section-title p {
-        font-size: 1.1rem;
-        color: #666;
-        max-width: 600px;
-        margin: 0 auto;
-    }
-    
-    .service-card {
-        background: white;
-        border-radius: 16px;
-        padding: 35px 25px;
-        text-align: center;
-        transition: all 0.4s ease;
-        height: 100%;
-        border: 1px solid #f0f0f0;
-    }
-    
-    .service-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(74, 144, 164, 0.15);
-        border-color: var(--primary-color);
-    }
-    
-    .service-icon {
-        width: 80px;
-        height: 80px;
-        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 25px;
-        font-size: 2rem;
-        color: white;
-        transition: transform 0.3s ease;
-    }
-    
-    .service-card:hover .service-icon {
-        transform: rotate(360deg) scale(1.1);
-    }
-    
-    .service-card h3 {
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: var(--dark-color);
-        margin-bottom: 15px;
-    }
-    
-    .service-card p {
-        color: #666;
-        margin-bottom: 25px;
-        line-height: 1.8;
-    }
-    
-    .service-card .btn {
-        background: var(--primary-color);
-        color: white;
-        padding: 8px 25px;
-        border-radius: 8px;
-    }
-    
-    .service-card .btn:hover {
-        background: #3a7a8c;
-    }
-    
-    /* === Stats Section === */
-    .stats-section {
-        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-        color: white;
-        padding: 70px 0;
-        margin: 80px 0;
-    }
-    
-    .stat-item {
-        text-align: center;
-        padding: 20px;
-    }
-    
-    .stat-number {
-        font-size: 3rem;
-        font-weight: 800;
-        color: var(--accent-color);
-        display: block;
-        margin-bottom: 10px;
-    }
-    
-    .stat-label {
-        font-size: 1.1rem;
-        opacity: 0.9;
-    }
-    
-    /* === Why Us Section === */
-    .feature-item {
-        display: flex;
-        gap: 20px;
-        margin-bottom: 30px;
-        padding: 25px;
-        background: white;
-        border-radius: 12px;
-        transition: all 0.3s ease;
-        border: 1px solid #f0f0f0;
-    }
-    
-    .feature-item:hover {
-        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-        transform: translateX(-5px);
-    }
-    
-    .feature-icon {
-        width: 60px;
-        height: 60px;
-        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 1.5rem;
-        flex-shrink: 0;
-    }
-    
-    .feature-content h4 {
-        font-size: 1.2rem;
-        font-weight: 700;
-        margin-bottom: 8px;
-        color: var(--dark-color);
-    }
-    
-    .feature-content p {
-        color: #666;
-        margin: 0;
-        line-height: 1.7;
-    }
-    
-    /* === CTA Section === */
-    .cta-section {
-        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-        color: white;
-        padding: 80px 0;
-        text-align: center;
-        border-radius: 20px;
-        margin: 80px auto;
-        max-width: 1140px;
-    }
-    
-    .cta-section h2 {
-        font-size: 2.2rem;
-        font-weight: 700;
-        margin-bottom: 20px;
-    }
-    
-    .cta-section p {
-        font-size: 1.15rem;
-        margin-bottom: 30px;
-        opacity: 0.95;
-    }
-    
-    .cta-section .btn {
-        padding: 14px 40px;
-        font-size: 1.1rem;
-        font-weight: 600;
-        background: white;
-        color: var(--primary-color);
-        border-radius: 10px;
-    }
-    
-    .cta-section .btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
-    
-    /* === Responsive === */
-    @media (max-width: 768px) {
-        .hero-section {
-            padding: 60px 0 80px;
-        }
-        
-        .hero-title {
-            font-size: 2rem;
-        }
-        
-        .hero-subtitle {
-            font-size: 1.1rem;
-        }
-        
-        .section-title h2 {
-            font-size: 1.7rem;
-        }
-        
-        .stat-number {
-            font-size: 2.2rem;
-        }
-        
-        .cta-section {
-            padding: 50px 20px;
-            margin: 50px 15px;
-        }
-        
-        .cta-section h2 {
-            font-size: 1.6rem;
-        }
-    }
-</style>
-{% endblock %}
+{% block title %}{{ site_content.site_owner_name }} | {{ site_content.site_tagline }}{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="hero-section">
+<!-- هیرو -->
+<section class="hero">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 hero-content fade-in-up">
-                <h1 class="hero-title">سلامت روان شما، اولویت ماست</h1>
-                <p class="hero-subtitle">
-                    با ارائه ابزارهای ارزیابی روانشناختی استاندارد و مشاوره تخصصی،
-                    به شما کمک می‌کنیم تا سلامت روان خود را بهتر درک کنید
-                    و قدم‌های مؤثری برای بهبود آن بردارید.
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6 hero-copy fade-in-up">
+                <span class="eyebrow">{{ site_content.home_hero_eyebrow }}</span>
+                <h1 class="hero-title">{{ site_content.home_hero_title|safe }}</h1>
+                <p class="hero-lead">
+                    {{ site_content.home_hero_lead|linebreaksbr }}
                 </p>
-                <div class="hero-buttons">
+                <div class="hero-actions">
                     {% if not user.is_authenticated %}
-                        <a href="{% url 'register' %}" class="btn btn-hero-primary">
-                            <i class="bi bi-person-plus me-2"></i>ثبت نام رایگان
-                        </a>
-                        <a href="{% url 'login' %}" class="btn btn-hero-outline">
-                            <i class="bi bi-box-arrow-in-right me-2"></i>ورود
-                        </a>
+                        <a href="{% url 'register' %}" class="btn btn-primary btn-lg">ثبت‌نام و شروع ارزیابی</a>
+                        <a href="{% url 'about' %}" class="btn btn-outline-primary btn-lg">آشنایی با من</a>
                     {% else %}
-                        <a href="{% url 'dashboard' %}" class="btn btn-hero-primary">
-                            <i class="bi bi-speedometer2 me-2"></i>رفتن به داشبورد
-                        </a>
+                        <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg">رفتن به داشبورد</a>
+                        <a href="{% url 'about' %}" class="btn btn-outline-primary btn-lg">آشنایی با من</a>
                     {% endif %}
                 </div>
             </div>
-            <div class="col-lg-6 hero-image d-none d-lg-block">
-                <i class="bi bi-heart-pulse"></i>
+            <div class="col-lg-6">
+                <div class="hero-visual">
+                    <div class="hero-carousel" id="heroCarousel">
+                        <div class="photo-panel is-active">
+                            <img src="{% if site_content.hero_photo_1 %}{{ site_content.hero_photo_1.url }}{% else %}{% static 'images/clinic-1.jpg' %}{% endif %}" alt="فضای مطب" onerror="this.remove()">
+                            <span class="photo-panel-caption"><i class="bi bi-camera"></i>فضای مطب — ۱</span>
+                        </div>
+                        <div class="photo-panel tone-light">
+                            <img src="{% if site_content.hero_photo_2 %}{{ site_content.hero_photo_2.url }}{% else %}{% static 'images/clinic-2.jpg' %}{% endif %}" alt="فضای مطب" onerror="this.remove()">
+                            <span class="photo-panel-caption"><i class="bi bi-camera"></i>فضای مطب — ۲</span>
+                        </div>
+                        <div class="photo-panel tone-warm">
+                            <img src="{% if site_content.hero_photo_3 %}{{ site_content.hero_photo_3.url }}{% else %}{% static 'images/clinic-3.jpg' %}{% endif %}" alt="فضای مطب" onerror="this.remove()">
+                            <span class="photo-panel-caption"><i class="bi bi-camera"></i>فضای مطب — ۳</span>
+                        </div>
+                        <div class="photo-panel tone-deep">
+                            <img src="{% if site_content.hero_photo_4 %}{{ site_content.hero_photo_4.url }}{% else %}{% static 'images/clinic-4.jpg' %}{% endif %}" alt="فضای مطب" onerror="this.remove()">
+                            <span class="photo-panel-caption"><i class="bi bi-camera"></i>فضای مطب — ۴</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Services Section -->
-<section class="container my-5 py-5">
-    <div class="section-title fade-in-up">
-        <h2>خدمات ما</h2>
-        <p>ابزارهای تخصصی برای ارزیابی و بهبود سلامت روان شما</p>
-    </div>
-    <div class="row g-4">
-        <div class="col-lg-4 col-md-6">
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="bi bi-heart"></i>
-                </div>
-                <h3>آزمون افسردگی PHQ-9</h3>
-                <p>ارزیابی سطح افسردگی با استفاده از پرسشنامه استاندارد PHQ-9 و دریافت تفسیر تخصصی نتایج.</p>
-                {% if user.is_authenticated %}
-                    <a href="{% url 'phq9_test' %}" class="btn">شروع آزمون</a>
-                {% else %}
-                    <a href="{% url 'register' %}" class="btn">ثبت نام و شروع</a>
-                {% endif %}
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-6">
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="bi bi-activity"></i>
-                </div>
-                <h3>آزمون اضطراب GAD-7</h3>
-                <p>ارزیابی سطح اضطراب عمومی با استفاده از پرسشنامه استاندارد GAD-7 و دریافت تفسیر تخصصی.</p>
-                {% if user.is_authenticated %}
-                    <a href="{% url 'gad7_test' %}" class="btn">شروع آزمون</a>
-                {% else %}
-                    <a href="{% url 'register' %}" class="btn">ثبت نام و شروع</a>
-                {% endif %}
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-6">
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="bi bi-book"></i>
-                </div>
-                <h3>وبلاگ تخصصی</h3>
-                <p>مطالعه مقالات تخصصی در زمینه سلامت روان، مدیریت استرس و بهبود کیفیت زندگی.</p>
-                <a href="{% url 'blog_list' %}" class="btn">مشاهده مقالات</a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Stats Section -->
-<section class="stats-section">
+<!-- از همین‌جا شروع کنید -->
+<section class="section pt-0">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-md-6">
-                <div class="stat-item">
-                    <span class="stat-number">۲۵۰۰+</span>
-                    <div class="stat-label">کاربر فعال</div>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <a href="{% if user.is_authenticated %}{% url 'dashboard' %}{% else %}{% url 'register' %}{% endif %}" class="path-card">
+                    <span class="eyebrow">{{ site_content.start_card1_eyebrow }}</span>
+                    <h3>{{ site_content.start_card1_title }}</h3>
+                    <p>{{ site_content.start_card1_desc }}</p>
+                    <span class="path-arrow">شروع آزمون ←</span>
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a href="{% url 'contact' %}" class="path-card">
+                    <span class="eyebrow">{{ site_content.start_card2_eyebrow }}</span>
+                    <h3>{{ site_content.start_card2_title }}</h3>
+                    <p>{{ site_content.start_card2_desc }}</p>
+                    <span class="path-arrow">اطلاعات تماس ←</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- آزمون‌های خودسنجی -->
+<section class="section section-alt">
+    <div class="container">
+        <div class="section-heading fade-in-up">
+            <span class="eyebrow">{{ site_content.tests_section_eyebrow }}</span>
+            <h2>{{ site_content.tests_section_title }}</h2>
+            <p>{{ site_content.tests_section_desc }}</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="test-card">
+                    <span class="test-tag">افسردگی</span>
+                    <h3>PHQ-9</h3>
+                    <p>{{ site_content.test1_desc }}</p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'phq9_test' %}" class="btn btn-outline-primary btn-sm">شروع آزمون</a>
+                    {% else %}
+                        <a href="{% url 'register' %}" class="btn btn-outline-primary btn-sm">ثبت‌نام و شروع</a>
+                    {% endif %}
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="stat-item">
-                    <span class="stat-number">۱۰۰۰۰+</span>
-                    <div class="stat-label">آزمون انجام شده</div>
+            <div class="col-lg-4 col-md-6">
+                <div class="test-card">
+                    <span class="test-tag">اضطراب</span>
+                    <h3>GAD-7</h3>
+                    <p>{{ site_content.test2_desc }}</p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'gad7_test' %}" class="btn btn-outline-primary btn-sm">شروع آزمون</a>
+                    {% else %}
+                        <a href="{% url 'register' %}" class="btn btn-outline-primary btn-sm">ثبت‌نام و شروع</a>
+                    {% endif %}
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="stat-item">
-                    <span class="stat-number">۹۸٪</span>
-                    <div class="stat-label">رضایت کاربران</div>
+            <div class="col-lg-4 col-md-6">
+                <div class="test-card">
+                    <span class="test-tag">افسردگی</span>
+                    <h3>Beck (BDI-II)</h3>
+                    <p>{{ site_content.test3_desc }}</p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'bdi_test' %}" class="btn btn-outline-primary btn-sm">شروع آزمون</a>
+                    {% else %}
+                        <a href="{% url 'register' %}" class="btn btn-outline-primary btn-sm">ثبت‌نام و شروع</a>
+                    {% endif %}
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="stat-item">
-                    <span class="stat-number">۲۴/۷</span>
-                    <div class="stat-label">پشتیبانی آنلاین</div>
+            <div class="col-lg-4 col-md-6">
+                <div class="test-card">
+                    <span class="test-tag">اضطراب</span>
+                    <h3>Beck (BAI)</h3>
+                    <p>{{ site_content.test4_desc }}</p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'bai_test' %}" class="btn btn-outline-primary btn-sm">شروع آزمون</a>
+                    {% else %}
+                        <a href="{% url 'register' %}" class="btn btn-outline-primary btn-sm">ثبت‌نام و شروع</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="test-card">
+                    <span class="test-tag">شخصیت</span>
+                    <h3>میلون MCMI-IV</h3>
+                    <p>{{ site_content.test5_desc }}</p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'mcmi4_test' %}" class="btn btn-outline-primary btn-sm">شروع آزمون</a>
+                    {% else %}
+                        <a href="{% url 'register' %}" class="btn btn-outline-primary btn-sm">ثبت‌نام و شروع</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="test-card">
+                    <span class="test-tag">وبلاگ</span>
+                    <h3>یادداشت‌های من</h3>
+                    <p>{{ site_content.test6_desc }}</p>
+                    <a href="{% url 'blog_list' %}" class="btn btn-outline-primary btn-sm">مطالعه‌ی یادداشت‌ها</a>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Why Us Section -->
-<section class="container my-5 py-5">
-    <div class="section-title fade-in-up">
-        <h2>چرا مرکز ما؟</h2>
-        <p>ویژگی‌هایی که ما را از دیگران متمایز می‌کند</p>
+<!-- مانیفست -->
+<section class="section">
+    <div class="container">
+        <div class="manifesto fade-in-up">
+            <blockquote>{{ site_content.manifesto_quote|safe }}</blockquote>
+            <cite>— {{ site_content.site_owner_name }}</cite>
+        </div>
     </div>
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="feature-item">
-                <div class="feature-icon">
-                    <i class="bi bi-shield-check"></i>
-                </div>
-                <div class="feature-content">
-                    <h4>امن و محرمانه</h4>
-                    <p>اطلاعات شما کاملاً محرمانه و با بالاترین استانداردهای امنیتی نگهداری می‌شود.</p>
+</section>
+
+<!-- درباره‌ی من -->
+<section class="section section-alt">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-5">
+                <div class="photo-panel tone-light" style="aspect-ratio: 4/5;">
+                    {% if site_content.about_me_photo %}<img src="{{ site_content.about_me_photo.url }}" alt="عکس" style="width:100%;height:100%;object-fit:cover;">{% endif %}
+                    <span class="photo-panel-caption"><i class="bi bi-camera"></i>عکس شما — [جای‌گذاریِ عکس واقعی]</span>
                 </div>
             </div>
-            <div class="feature-item">
-                <div class="feature-icon">
-                    <i class="bi bi-lightning"></i>
-                </div>
-                <div class="feature-content">
-                    <h4>سریع و آسان</h4>
-                    <p>آزمون‌ها در کمتر از ۵ دقیقه تکمیل می‌شوند و نتایج فوری دریافت می‌کنید.</p>
-                </div>
+            <div class="col-lg-7">
+                <span class="eyebrow">{{ site_content.about_me_eyebrow }}</span>
+                <h2 class="mb-3">{{ site_content.about_me_title }}</h2>
+                <div>{{ site_content.about_me_text|safe }}</div>
+                <a href="{% url 'about' %}" class="btn btn-outline-primary">بیشتر درباره‌ی من بخوانید</a>
             </div>
         </div>
-        <div class="col-lg-6">
-            <div class="feature-item">
-                <div class="feature-icon">
-                    <i class="bi bi-translate"></i>
-                </div>
-                <div class="feature-content">
-                    <h4>تفسیر فارسی</h4>
-                    <p>نتایج با تفسیر کامل فارسی و قابل فهم برای همه ارائه می‌شوند.</p>
+    </div>
+</section>
+
+<!-- روند کار -->
+<section class="section">
+    <div class="container">
+        <div class="section-heading fade-in-up">
+            <span class="eyebrow">{{ site_content.process_section_eyebrow }}</span>
+            <h2>{{ site_content.process_section_title }}</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="process-step">
+                    <span class="process-num">۱</span>
+                    <div>
+                        <h4>{{ site_content.process_step1_title }}</h4>
+                        <p>{{ site_content.process_step1_desc }}</p>
+                    </div>
                 </div>
             </div>
-            <div class="feature-item">
-                <div class="feature-icon">
-                    <i class="bi bi-graph-up"></i>
+            <div class="col-md-4">
+                <div class="process-step">
+                    <span class="process-num">۲</span>
+                    <div>
+                        <h4>{{ site_content.process_step2_title }}</h4>
+                        <p>{{ site_content.process_step2_desc }}</p>
+                    </div>
                 </div>
-                <div class="feature-content">
-                    <h4>پیگیری پیشرفت</h4>
-                    <p>تاریخچه آزمون‌ها برای پیگیری تغییرات وضعیت روانی شما ذخیره می‌شود.</p>
+            </div>
+            <div class="col-md-4">
+                <div class="process-step">
+                    <span class="process-num">۳</span>
+                    <div>
+                        <h4>{{ site_content.process_step3_title }}</h4>
+                        <p>{{ site_content.process_step3_desc }}</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- CTA Section -->
-<section class="container">
-    <div class="cta-section fade-in-up">
-        <div class="container">
-            <h2>همین امروز سلامت روان خود را ارزیابی کنید</h2>
-            <p>ثبت نام رایگان است و کمتر از ۱ دقیقه طول می‌کشد</p>
-            {% if not user.is_authenticated %}
-                <a href="{% url 'register' %}" class="btn">
-                    <i class="bi bi-rocket me-2"></i>شروع کنید
-                </a>
-            {% else %}
-                <a href="{% url 'dashboard' %}" class="btn">
-                    <i class="bi bi-speedometer2 me-2"></i>داشبورد من
-                </a>
-            {% endif %}
-        </div>
+<!-- CTA -->
+<section class="container mb-5">
+    <div class="cta-band fade-in-up">
+        <h2>{{ site_content.cta_title }}</h2>
+        <p>{{ site_content.cta_text }}</p>
+        {% if not user.is_authenticated %}
+            <a href="{% url 'register' %}" class="btn btn-accent btn-lg">شروع کنید</a>
+        {% else %}
+            <a href="{% url 'dashboard' %}" class="btn btn-accent btn-lg">داشبورد من</a>
+        {% endif %}
     </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    var slides = document.querySelectorAll('#heroCarousel .photo-panel');
+    if (slides.length < 2) return;
+    var current = 0;
+    var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var intervalMs = 5000;
+    setInterval(function () {
+        slides[current].classList.remove('is-active');
+        current = (current + 1) % slides.length;
+        slides[current].classList.add('is-active');
+    }, intervalMs);
+})();
+</script>
 {% endblock %}

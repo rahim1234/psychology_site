@@ -1,0 +1,54 @@
+{% extends "core/base.html" %}
+
+{% block title %}مدیریت منوی سایت{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 760px;">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1><i class="bi bi-list-ul me-2"></i>مدیریت منوی سایت</h1>
+        <a href="{% url 'manage_menu_add' %}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>افزودن لینک جدید</a>
+    </div>
+    <p class="text-muted">لینک‌های ثابت منو (صفحه اصلی، وبلاگ، درباره ما، تماس با ما) همیشه اول نمایش داده می‌شوند. لینک‌های زیر پس از آن‌ها اضافه می‌شوند.</p>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <table class="table align-middle">
+        <thead>
+            <tr>
+                <th>عنوان</th>
+                <th>آدرس</th>
+                <th>ترتیب</th>
+                <th>فعال</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in menu_items %}
+            <tr>
+                <td>{{ item.label }}</td>
+                <td class="text-muted small">{{ item.url }}</td>
+                <td>{{ item.order }}</td>
+                <td>
+                    {% if item.is_active %}
+                        <span class="text-success"><i class="bi bi-check-circle-fill"></i></span>
+                    {% else %}
+                        <span class="text-muted"><i class="bi bi-dash-circle"></i></span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'manage_menu_edit' item.pk %}" class="btn btn-sm btn-outline-primary">ویرایش</a>
+                    <a href="{% url 'manage_menu_delete' item.pk %}" class="btn btn-sm btn-outline-danger">حذف</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" class="text-muted text-center py-4">هنوز لینکی اضافه نشده است.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'manage_content' %}" class="btn btn-outline-secondary">→ بازگشت به مدیریت محتوای صفحات</a>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "core/base.html" %}
+
+{% block title %}حذف لینک منو{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 520px;">
+    <h1 class="mb-4">حذف لینک منو</h1>
+    <p>آیا از حذف «{{ object.label }}» از منوی سایت مطمئن هستید؟</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">حذف</button>
+        <a href="{% url 'manage_menu' %}" class="btn btn-outline-secondary">انصراف</a>
+    </form>
+</div>
+{% endblock %}

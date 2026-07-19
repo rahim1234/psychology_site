@@ -118,11 +118,9 @@
             <i class="bi bi-heart-fill"></i>
             <h2>مرکز مشاوره روانشناسی</h2>
         </div>
-        <p style="font-size: 1.1rem; line-height: 2;">
-            مرکز مشاوره روانشناسی با هدف ارتقای سلامت روان جامعه و ارائه خدمات
-            ارزیابی روانشناختی آنلاین تأسیس شده است. ما باور داریم که هر فردی
-            حق دارد به ابزارهای ارزیابی سلامت روان دسترسی داشته باشد.
-        </p>
+        <div style="font-size: 1.1rem; line-height: 2;">
+            {{ site_content.about_intro|safe }}
+        </div>
     </div>
     
     <!-- مأموریت -->
@@ -131,12 +129,9 @@
             <i class="bi bi-bullseye"></i>
             <h2>مأموریت ما</h2>
         </div>
-        <p style="font-size: 1.1rem; line-height: 2;">
-            مأموریت ما ارائه ابزارهای ارزیابی دقیق، معتبر و قابل دسترس برای
-            همه افراد است. ما تلاش می‌کنیم با ارائه نتایج قابل فهم و تفسیر
-            تخصصی، به افراد کمک کنیم تا وضعیت سلامت روان خود را بهتر درک کنند
-            و در صورت نیاز، اقدام مناسب انجام دهند.
-        </p>
+        <div style="font-size: 1.1rem; line-height: 2;">
+            {{ site_content.about_mission|safe }}
+        </div>
     </div>
     
     <!-- ابزارها -->
@@ -147,17 +142,16 @@
         </div>
         <ul class="tools-list">
             <li>
-                <strong><i class="bi bi-heart me-2"></i>آزمون PHQ-9:</strong>
-                پرسشنامه افسردگی بیمار - یک ابزار استاندارد بین‌المللی برای غربالگری افسردگی
+                <strong><i class="bi bi-heart me-2"></i>{{ site_content.about_tool1_title }}</strong>
+                {{ site_content.about_tool1_desc }}
             </li>
             <li>
-                <strong><i class="bi bi-activity me-2"></i>آزمون GAD-7:</strong>
-                پرسشنامه اضطراب عمومی - یک ابزار استاندارد بین‌المللی برای غربالگری اضطراب
+                <strong><i class="bi bi-activity me-2"></i>{{ site_content.about_tool2_title }}</strong>
+                {{ site_content.about_tool2_desc }}
             </li>
         </ul>
         <p class="mt-3">
-            هر دو پرسشنامه توسط متخصصان بهداشت روان طراحی شده و در سراسر جهان
-            مورد استفاده قرار می‌گیرند.
+            {{ site_content.about_tools_note }}
         </p>
     </div>
     
@@ -166,10 +160,9 @@
         <div class="d-flex align-items-start gap-3">
             <i class="bi bi-exclamation-triangle"></i>
             <div>
-                <strong style="font-size: 1.1rem;">توجه مهم:</strong>
+                <strong style="font-size: 1.1rem;">{{ site_content.about_warning_title }}</strong>
                 <p class="mb-0 mt-2">
-                    نتایج آزمون‌های ما جنبه غربالگری دارند و جایگزین تشخیص تخصصی
-                    پزشک نیستند. در صورت نیاز، حتماً با یک متخصص بهداشت روان مشورت کنید.
+                    {{ site_content.about_warning_text }}
                 </p>
             </div>
         </div>

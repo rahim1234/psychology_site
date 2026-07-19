@@ -17,7 +17,7 @@ from .forms import (
     VerificationCodeForm,
 )
 from .models import PhoneVerification
-from .utils import SMSSendError, create_and_send_verification
+from .utils import SMSSendError, create_and_send_verification, ratelimit_key_phone_number
 
 User = get_user_model()
 
@@ -44,7 +44,7 @@ def ratelimited_error(request, exception=None):
     name='dispatch'
 )
 @method_decorator(
-    ratelimit(key='post:phone_number', rate='3/h', method='POST', block=True),
+    ratelimit(key=ratelimit_key_phone_number, rate='3/h', method='POST', block=True),
     name='dispatch'
 )
 class RegisterView(View):
@@ -222,7 +222,7 @@ class ChangePasswordView(LoginRequiredMixin, View):
     name='dispatch'
 )
 @method_decorator(
-    ratelimit(key='post:phone_number', rate='3/h', method='POST', block=True),
+    ratelimit(key=ratelimit_key_phone_number, rate='3/h', method='POST', block=True),
     name='dispatch'
 )
 class PasswordResetRequestView(View):

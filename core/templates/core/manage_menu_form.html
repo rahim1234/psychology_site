@@ -1,0 +1,22 @@
+{% extends "core/base.html" %}
+
+{% block title %}{% if object %}ویرایش لینک منو{% else %}افزودن لینک منو{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 520px;">
+    <h1 class="mb-4">{% if object %}ویرایش لینک منو{% else %}افزودن لینک منو{% endif %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="mb-3">
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}<small class="form-text text-muted">{{ field.help_text }}</small>{% endif %}
+                {% if field.errors %}<div class="text-danger small">{{ field.errors }}</div>{% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">ذخیره</button>
+        <a href="{% url 'manage_menu' %}" class="btn btn-outline-secondary">انصراف</a>
+    </form>
+</div>
+{% endblock %}

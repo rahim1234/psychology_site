@@ -101,7 +101,7 @@
                     <i class="bi bi-envelope"></i>
                 </div>
                 <h3>ایمیل</h3>
-                <p>info@psychology-center.ir</p>
+                <p>{{ site_content.contact_email }}</p>
             </div>
         </div>
         <div class="col-lg-4 col-md-6">
@@ -110,7 +110,7 @@
                     <i class="bi bi-telephone"></i>
                 </div>
                 <h3>تلفن</h3>
-                <p>۰۲۱-۱۲۳۴۵۶۷۸</p>
+                <p>{{ site_content.contact_phone }}</p>
             </div>
         </div>
         <div class="col-lg-4 col-md-6">
@@ -119,7 +119,7 @@
                     <i class="bi bi-geo-alt"></i>
                 </div>
                 <h3>آدرس</h3>
-                <p>تهران، خیابان ولیعصر، پلاک ۱۲۳</p>
+                <p>{{ site_content.contact_address }}</p>
             </div>
         </div>
         <div class="col-lg-6 col-md-6">
@@ -130,7 +130,7 @@
                     </div>
                     <h3 class="mb-0">ساعات کاری</h3>
                 </div>
-                <p>شنبه تا پنجشنبه، ۹ صبح تا ۵ عصر</p>
+                <p>{{ site_content.contact_hours }}</p>
             </div>
         </div>
         <div class="col-lg-6 col-md-12">
@@ -142,8 +142,7 @@
                     <h3 class="mb-0">پیام برای ما</h3>
                 </div>
                 <p>
-                    برای ارتباط با ما می‌توانید از طریق ایمیل یا تلفن
-                    با ما در تماس باشید. ما در اسرع وقت پاسخگو خواهیم بود.
+                    {{ site_content.contact_message|linebreaksbr }}
                 </p>
             </div>
         </div>
@@ -154,11 +153,11 @@
         <div class="row align-items-center">
             <div class="col-lg-8">
                 <h3><i class="bi bi-exclamation-triangle me-2"></i>اورژانس روانپزشکی</h3>
-                <p class="mb-0">در صورت اورژانس روانپزشکی، با خط اورژانس اجتماعی ۱۲۳ تماس بگیرید.</p>
+                <p class="mb-0">{{ site_content.emergency_text }}</p>
             </div>
             <div class="col-lg-4 text-center">
-                <a href="tel:123" class="btn">
-                    <i class="bi bi-telephone me-2"></i>تماس با ۱۲۳
+                <a href="tel:{{ site_content.emergency_phone }}" class="btn">
+                    <i class="bi bi-telephone me-2"></i>تماس با {{ site_content.emergency_phone }}
                 </a>
             </div>
         </div>

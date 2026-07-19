@@ -6,6 +6,7 @@ After=network.target
 User=www-data
 Group=www-data
 WorkingDirectory=/var/www/psychology_site
+Environment=HOME=/var/www/psychology_site
 ExecStart=/var/www/psychology_site/venv/bin/gunicorn \
     --workers 3 \
     --bind unix:/var/www/psychology_site/gunicorn.sock \

@@ -40,6 +40,22 @@ def normalize_iranian_mobile(raw: str) -> str:
     return value
 
 
+def ratelimit_key_phone_number(group, request):
+    """django-ratelimit key function: rate-limit by the *normalized* phone number.
+
+    The built-in ``key='post:phone_number'`` shortcut keys on the raw,
+    un-normalized POST value. That means the same phone number submitted in
+    different but equivalent forms (e.g. ``+98912...``, ``0098912...``, with
+    spaces/dashes, or Persian/Arabic-Indic digits) each get their own
+    independent rate-limit bucket -- letting an attacker bypass the
+    per-phone-number limit entirely while still hitting the same real
+    account. Normalizing here closes that loophole so every equivalent
+    representation of one phone number shares a single bucket.
+    """
+    raw = request.POST.get('phone_number', '')
+    return normalize_iranian_mobile(raw.strip())
+
+
 def generate_verification_code() -> str:
     """Return a cryptographically-random 6-digit numeric code."""
     return ''.join(secrets.choice('0123456789') for _ in range(6))
